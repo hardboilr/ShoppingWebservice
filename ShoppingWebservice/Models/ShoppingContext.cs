@@ -11,6 +11,8 @@ namespace ShoppingWebservice.Models {
 
         public ShoppingContext() : base(CONN) {
             Database.SetInitializer<ShoppingContext>(new DropCreateDatabaseAlways<ShoppingContext>());
+
+            Database.ExecuteSqlCommand()
         }
 
         public DbSet<Cart> Carts { get; set; }
