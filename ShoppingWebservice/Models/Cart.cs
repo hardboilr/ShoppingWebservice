@@ -10,7 +10,11 @@ namespace ShoppingWebservice.Models {
         public DateTime CheckedOutAt { get; set; }
         public User User { get; set; }
         public List<CartItem> CartItems { set; get; }
-        
-         
+
+
+        public Cart(User user) {
+            CreatedAt = DateTime.Now;
+            User = user;
+        }
     }
 }
