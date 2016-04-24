@@ -1,11 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Data.Entity.Infrastructure;
+﻿using System.Collections.Generic;
 using System.Linq;
-using System.Web;
+using ShoppingWebservice.Models;
 
-namespace ShoppingWebservice.Models {
-    public class ItemControl {
+namespace ShoppingWebservice.Repositories {
+    public class ItemRepository {
 
 
 
@@ -18,7 +16,6 @@ namespace ShoppingWebservice.Models {
                 if (category == null) {
                     category = new Category(categoryName, categoryDescription);
                 }
-                
                 db.Categories.Add(category);
                 Item item = new Item(itemName, itemDescription, itemPrice, category);
                 db.Items.Add(item);
@@ -28,14 +25,14 @@ namespace ShoppingWebservice.Models {
             return returnItem;
         }
 
-        public Item UpdateItem(int itemId, string itemName, string itemDesription, float itemPrice, int categoryId) {
+        public Item UpdateItem(int itemId, string itemName, string itemDescription, float itemPrice, int categoryId) {
             Item returnItem = null;
             using (var db = new ShoppingContext()) {
                 var item = db.Items.Find(itemId);
                 var category = db.Categories.Find(categoryId);
                 if (item != null && category != null) {
                     item.Name = itemName;
-                    item.Description = itemDesription;
+                    item.Description = itemDescription;
                     item.Price = itemPrice;
                     item.Category = category;
                     db.SaveChanges();
@@ -69,9 +66,8 @@ namespace ShoppingWebservice.Models {
         public IList<Item> GetAllItemsByCategory(int categoryId) {
             IList<Item> returnItems = null;
             using (var db = new ShoppingContext()) {
-                var items = from i in db.Items where i.Category.CategoryId == categoryId select i;
-                IList<Item> itemsList = items.ToList();
-                returnItems = itemsList;
+                var items = from i in db.Items where i.Category.CategoryId.Equals(categoryId) select i;
+                returnItems = items.ToList();
             }
             return returnItems;
         }

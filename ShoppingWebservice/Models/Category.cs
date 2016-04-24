@@ -12,7 +12,7 @@ namespace ShoppingWebservice.Models {
         public int CategoryId { get; set; }
         public string CategoryName { get; set; }
         public string Description { get; set; }
-        public List<Item> Items { get; set; }
+        public List<Item> Items { get; set; } = new List<Item>();
 
         public Category() { }
 

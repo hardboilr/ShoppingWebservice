@@ -9,7 +9,7 @@ namespace ShoppingWebservice.Models {
         public DateTime CreatedAt { get; set; }
         public DateTime CheckedOutAt { get; set; }
         public User User { get; set; }
-        public List<CartItem> CartItems { set; get; }
+        public List<CartItem> CartItems { get; set; } = new List<CartItem>();
 
 
         public Cart(User user) {

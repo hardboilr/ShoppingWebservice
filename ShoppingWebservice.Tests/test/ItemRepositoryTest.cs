@@ -2,11 +2,12 @@
 using System.Collections.Generic;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using ShoppingWebservice.Models;
+using ShoppingWebservice.Repositories;
 
 namespace ShoppingWebservice.Tests.test {
     [TestClass]
-    public class ItemControlTest {
-        ItemControl ic = new ItemControl();
+    public class ItemRepositoryTest {
+        ItemRepository ic = new ItemRepository();
 
         [TestMethod]
         public void CreateItemTest() {

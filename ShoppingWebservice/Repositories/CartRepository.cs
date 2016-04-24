@@ -1,10 +1,8 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
+using ShoppingWebservice.Models;
 
-namespace ShoppingWebservice.Models {
-    public class CartControl {
+namespace ShoppingWebservice.Repositories {
+    public class CartRepository {
 
         public Cart CreateCart(int userId) {
             Cart returnCart = null;
@@ -38,8 +36,14 @@ namespace ShoppingWebservice.Models {
         }
 
         public Cart CheckoutCart(int cartId) {
-
-            return null;
+            Cart returnCart = null;
+            using (var db = new ShoppingContext()) {
+                var cart = db.Carts.Find(cartId);
+                cart.CheckedOutAt = DateTime.Now;
+                db.SaveChanges();
+                returnCart = cart;
+            }
+            return returnCart;
         }
     }
 }
