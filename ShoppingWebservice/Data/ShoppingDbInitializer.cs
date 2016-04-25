@@ -90,6 +90,7 @@ namespace ShoppingWebservice.Data {
             categories.Add(vitaminerOgKosttilskud);
             categories.Add(husholdning);
             categories.Add(køkkenrulleOgToiletpapir);
+
             foreach (Category category in categories) {
                 context.Categories.Add(category);
             }
@@ -145,7 +146,6 @@ namespace ShoppingWebservice.Data {
             }
 
             // Carts
-
             IList<Cart> carts = new List<Cart>();
 
             //tobias cart 1

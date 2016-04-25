@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
@@ -12,29 +13,21 @@ namespace ShoppingWebservice.Controllers {
     [RoutePrefix("api/item")]
     public class ItemController : ApiController {
 
-        private ItemRepository itemRepository;
+        private readonly ItemRepository _itemRepository;
 
         public ItemController() {
-            itemRepository = new ItemRepository(); ;
+            _itemRepository = new ItemRepository(); ;
         }
 
         [HttpPost]
         [Route("create")]
-        public Item CreateItem(JObject data) {
-            dynamic json = data;
-
-            List<Category> categories = new List<Category>(json.Categories); // måske for-loop virker bedre...
-
-            Category category = new Category() {
-                CategoryName = json.CategoryName,
-                Description = json.CategoryDescription
-            };
-            Item item = new Item() {
-                Name = json.ItemName,
-                Description = json.ItemDescription,
-                Price = json.ItemPrice
-            };
-            return itemRepository.CreateItem(category.CategoryName, category.Description, item.Name, item.Description, item.Price);
+        public HttpResponseMessage CreateItem(Item item) {
+            if (ModelState.IsValid) {
+                _itemRepository.CreateItem(item);
+                return new HttpResponseMessage(HttpStatusCode.OK);
+            } else {
+                return Request.CreateErrorResponse(HttpStatusCode.BadRequest, ModelState);
+            }
         }
 
         [HttpPut]
@@ -48,39 +41,41 @@ namespace ShoppingWebservice.Controllers {
                 Price = json.ItemPrice
             };
             Category category = new Category() {
-                CategoryId = json.CategoryId
+                //CategoryId = json.CategoryId
             };
-            return itemRepository.UpdateItem(item.ItemId, item.Name, item.Description, item.Price, category.CategoryId);
+            //return _itemRepository.UpdateItem(item.ItemId, item.Name, item.Description, item.Price, category.CategoryId);
+            return null;
         }
 
         [HttpDelete]
         [Route("delete/{itemId}")]
         public Item DeleteItem(int itemId) {
-            return itemRepository.DeleteItem(itemId);
+            return _itemRepository.DeleteItem(itemId);
         }
 
         [HttpGet]
         [Route("all")]
         public IList<Item> GetAllItems() {
-            return itemRepository.GetAllItems();
+            return _itemRepository.GetAllItems();
         }
 
         [HttpGet]
         [Route("all/{categoryId}")]
         public IList<Item> GetallItemsByCategory(int categoryId) {
-            return itemRepository.GetAllItemsByCategory(categoryId);
+            return _itemRepository.GetAllItemsByCategory(categoryId);
         }
 
         [HttpGet]
-        [Route("getitem/{itemId}")]
+        [Route("{itemId}")]
         public Item GetItem(int itemId) {
-            return itemRepository.GetItem(itemId);
+            return _itemRepository.GetItem(itemId);
         }
 
-        [HttpGet]
-        [Route("getcategory/{categoryName}")]
-        public Category GetCategory(string categoryName) {
-            return itemRepository.GetCategory(categoryName);
-        }
+        // todo: move to category controller
+        //[HttpGet]
+        //[Route("category/{categoryName}")]
+        //public Category GetCategory(string categoryName) {
+        //    return _itemRepository.GetCategory(categoryName);
+        //}
     }
 }

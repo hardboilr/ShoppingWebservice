@@ -27,5 +27,9 @@ namespace ShoppingWebservice.Models {
             CategoryName = categoryName;
             Description = description;
         }
+
+        public override string ToString() {
+            return base.ToString() + ": " + ", " + CategoryName + ", " + Description + ", Items: " + Items;
+        }
     }
 }

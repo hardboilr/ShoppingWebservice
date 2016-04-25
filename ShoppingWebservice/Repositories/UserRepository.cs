@@ -17,8 +17,8 @@ namespace ShoppingWebservice.Repositories {
         public User GetUser(string username) {
             User returnUser = null;
             using (var db = new ShoppingContext()) {
-                var user = from u in db.Users where u.FirstName.Equals(username) select u;
-                returnUser = user.First();
+                //var user = from u in db.Users where u.FirstName.Equals(username) select u;
+                //returnUser = user.First();
             }
             return returnUser;
         }

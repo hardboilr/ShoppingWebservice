@@ -1,27 +1,26 @@
 ﻿using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using ShoppingWebservice.Models;
 
 namespace ShoppingWebservice.Repositories {
     public class ItemRepository {
 
-        // todo: must take List<Category> instead of Category
-        public Item CreateItem(string categoryName, string categoryDescription, string itemName, string itemDescription, float itemPrice) {
-            Item returnItem = null;
+        public void CreateItem(Item item) {
             using (var db = new ShoppingContext()) {
-                Category category = null;
-                var categories = from c in db.Categories where c.CategoryName == categoryName select c;
-                category = categories.GetEnumerator().Current;
-                if (category == null) {
-                    category = new Category(categoryName, categoryDescription);
+                // check for existing categories
+                for (int i = 0; i < item.Categories.Count; i++) {
+                    string categoryName = item.Categories[i].CategoryName;
+
+                    var query = from c in db.Categories where c.CategoryName.Equals(categoryName) select c;
+
+                    foreach (var c in query) {
+                        item.Categories[i] = c; // point to existing category in db
+                    }
                 }
-                db.Categories.Add(category);
-                Item item = new Item(itemName, itemDescription, itemPrice, new List<Category>() {category});
                 db.Items.Add(item);
                 db.SaveChanges();
-                returnItem = item;
             }
-            return returnItem;
         }
 
         // todo: must take List<Category> instead of Category

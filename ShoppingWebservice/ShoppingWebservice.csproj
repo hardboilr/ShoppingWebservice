@@ -173,6 +173,7 @@
     <Compile Include="Controllers\ItemController.cs" />
     <Compile Include="Controllers\UserController.cs" />
     <Compile Include="Data\ShoppingDbInitializer.cs" />
+    <Compile Include="JsonConverters\ItemJson.cs" />
     <Compile Include="JsonConverters\UserJson.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
