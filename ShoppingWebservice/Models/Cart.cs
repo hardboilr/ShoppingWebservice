@@ -23,9 +23,9 @@ namespace ShoppingWebservice.Models {
         public List<CartItem> CartItems { set; get; } = new List<CartItem>();
 
         public Cart() { }
-
-        public Cart(DateTime createdAt, User user) {
-            CreatedAt = createdAt;
+   
+        public Cart(User user) {
+            CreatedAt = DateTime.Now;
             User = user;
         }
     }

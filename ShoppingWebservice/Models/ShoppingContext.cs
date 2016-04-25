@@ -10,7 +10,6 @@ namespace ShoppingWebservice.Models {
 
         public static string CONN = @"Data Source=(localdb)\MSSQLLocalDB;Initial Catalog=ShoppingWebservice;Integrated Security=True;Connect Timeout=30;Encrypt=False;TrustServerCertificate=True;ApplicationIntent=ReadWrite;MultiSubnetFailover=False";
 
-
         public ShoppingContext() : base(CONN) {
             Database.SetInitializer<ShoppingContext>(new ShoppingDbInitializer());
         }

@@ -96,111 +96,27 @@ namespace ShoppingWebservice.Data {
 
             // Items
             IList<Item> items = new List<Item>();
-            Item datterinoTomater = new Item("datterino tomater", "økologiske datterino tomater", 21.00f);
-            Item vildmoseKartofler = new Item("vildmose kartofler", "miniature kartofler dyrket i nord jylland", 20.00f);
-            Item roastbeef = new Item("roastbeef", "af tyksteg", 210.00f);
-            Item oksetyndsteg = new Item("oksetyndsteg", "lækker, lækker oksetyndsteg til en sulten mavse", 299.00f);
-            Item kulmulefilet = new Item("kulmulefilet", "kulmulefilet med skind (merluccius merluccius)", 160.00f);
-            Item jerseyLetmælk = new Item("jerseyLetmælk", "irmas ækologiske mælk fra ko", 12.00f);
-            Item jomfruhummer = new Item("jomfruhummer", "de har lange organer med muskuløse haler, og bor i sprækker eller huler på havbunden", 450.00f);
-            Item kærnemælk = new Item("kærnemælk", "kærnemælk henviser til en række af mælkedrikke. Oprindeligt kærnemælk var væsken efterladt efter kærning smør ud af fløde", 6.95f);
-            Item chokoRugbrødsboller = new Item("choko rugbrødsboller", "super lækre chokoladefyldte rugbrødsboller", 40.00f);
-            Item carbernetSauvignon = new Item("Carbernet Sauvignon", "denne vin stammer fra Los Morros ejendom i Maipo-dalen, der er den første vindyrknings dal i Chile til at blive internationalt anerkendt for sin fremragende Cabernet Sauvignon", 129.95f);
-            Item hyldebærSaft = new Item("hyldebær saft", "juice er en væske (drik), der naturligt findes i frugt og grøntsager", 21.95f);
-            Item colafantasi = new Item("colafantasi", "dejlig sukkerfyldt væske", 14.95f);
-            Item hvedemel = new Item("hvedemel", "mel er et pulver fremstillet ved formaling af ubehandlede korn eller andre frø eller rødder", 16.00f);
-            Item nøddemix = new Item("nøddemix", "En nød er en frugt, der består af en hård skal og en frø, som er generelt spiselige", 23.00f);
-            Item chokoladetærte = new Item("chokoladetærte", "dejlig chokoladetærte", 32.95f);
-            Item millionbøf = new Item("millionbøf", "med kartoffelmos", 18.75f);
-            Item finskSødLakrids = new Item("finsk sød lakrids", "lakrids, eller lakrids, er roden af Glycyrrhiza glabra, hvorfra en sød smag kan udvindes", 26.00f);
-            Item brystkarameller = new Item("brystkarameller", "bolcher som i gamle dage", 29.95f);
-            Item vitaminC = new Item("vitaminC", "vitamin C eller L-ascorbinsyre, eller blot ascorbat (anionen af ascorbinsyre), er et vigtigt næringsstof for mennesker og visse andre dyrearter", 65.00f);
-            Item proteinbar = new Item("proteinbar", "bliv bomstærk", 20.00f);
-            Item toiletpapir = new Item("toiletpapir", "3-lags papir fremstillet af ny papirmasse bleget med brintoverilte.", 35.00f);
-
-            // Item categories
-            datterinoTomater.Categories.Add(mad);
-            datterinoTomater.Categories.Add(frugtOgGrønt);
-            datterinoTomater.Categories.Add(grøntsager);
-
-            vildmoseKartofler.Categories.Add(mad);
-            vildmoseKartofler.Categories.Add(frugtOgGrønt);
-            vildmoseKartofler.Categories.Add(grøntsager);
-
-            roastbeef.Categories.Add(mad);
-            roastbeef.Categories.Add(kød);
-            roastbeef.Categories.Add(oksekød);
-
-            oksetyndsteg.Categories.Add(mad);
-            oksetyndsteg.Categories.Add(kød);
-            oksetyndsteg.Categories.Add(oksekød);
-
-            kulmulefilet.Categories.Add(mad);
-            kulmulefilet.Categories.Add(fisk);
-            kulmulefilet.Categories.Add(fileterOgFars);
-
-            jerseyLetmælk.Categories.Add(mad);
-            jerseyLetmælk.Categories.Add(mejeri);
-            jerseyLetmælk.Categories.Add(mælkOgFløde);
-
-            kærnemælk.Categories.Add(mad);
-            kærnemælk.Categories.Add(mejeri);
-            kærnemælk.Categories.Add(mælkOgFløde);
-
-            jomfruhummer.Categories.Add(mad);
-            jomfruhummer.Categories.Add(fisk);
-            jomfruhummer.Categories.Add(fileterOgFars);
-
-            chokoRugbrødsboller.Categories.Add(mad);
-            chokoRugbrødsboller.Categories.Add(brødOgKager);
-            chokoRugbrødsboller.Categories.Add(rugbrød);
-
-            carbernetSauvignon.Categories.Add(mad);
-            carbernetSauvignon.Categories.Add(vin);
-            carbernetSauvignon.Categories.Add(rødvin);
-
-            hyldebærSaft.Categories.Add(mad);
-            hyldebærSaft.Categories.Add(drikkevarer);
-            hyldebærSaft.Categories.Add(juiceSaftOgMost);
-
-            colafantasi.Categories.Add(mad);
-            colafantasi.Categories.Add(drikkevarer);
-            colafantasi.Categories.Add(juiceSaftOgMost);
-
-            hvedemel.Categories.Add(mad);
-            hvedemel.Categories.Add(kolonial);
-            hvedemel.Categories.Add(bagning);
-
-            nøddemix.Categories.Add(mad);
-            nøddemix.Categories.Add(kolonial);
-            nøddemix.Categories.Add(bagning);
-
-            chokoladetærte.Categories.Add(mad);
-            chokoladetærte.Categories.Add(kolonial);
-            chokoladetærte.Categories.Add(bagning);
-
-            millionbøf.Categories.Add(mad);
-            millionbøf.Categories.Add(frost);
-            millionbøf.Categories.Add(middagsretter);
-
-            finskSødLakrids.Categories.Add(mad);
-            finskSødLakrids.Categories.Add(kiosk);
-            finskSødLakrids.Categories.Add(slik);
-
-            brystkarameller.Categories.Add(mad);
-            brystkarameller.Categories.Add(kiosk);
-            brystkarameller.Categories.Add(slik);
-
-            vitaminC.Categories.Add(mad);
-            vitaminC.Categories.Add(pleje);
-            vitaminC.Categories.Add(vitaminerOgKosttilskud);
-
-            proteinbar.Categories.Add(mad);
-            proteinbar.Categories.Add(pleje);
-            proteinbar.Categories.Add(vitaminerOgKosttilskud);
-
-            toiletpapir.Categories.Add(husholdning);
-            toiletpapir.Categories.Add(køkkenrulleOgToiletpapir);
+            Item datterinoTomater = new Item("datterino tomater", "økologiske datterino tomater", 21.00f, new List<Category>() {mad, frugtOgGrønt, grøntsager});
+            Item vildmoseKartofler = new Item("vildmose kartofler", "miniature kartofler dyrket i nord jylland", 20.00f, new List<Category>() {mad, frugtOgGrønt, grøntsager});
+            Item roastbeef = new Item("roastbeef", "af tyksteg", 210.00f, new List<Category>() {mad, kød, oksekød});
+            Item oksetyndsteg = new Item("oksetyndsteg", "lækker, lækker oksetyndsteg til en sulten mavse", 299.00f, new List<Category>() {mad, kød, oksekød});
+            Item kulmulefilet = new Item("kulmulefilet", "kulmulefilet med skind (merluccius merluccius)", 160.00f, new List<Category>() {mad, fisk, fileterOgFars});
+            Item jerseyLetmælk = new Item("jerseyLetmælk", "irmas ækologiske mælk fra ko", 12.00f, new List<Category>() {mad, mejeri, mælkOgFløde});
+            Item jomfruhummer = new Item("jomfruhummer", "de har lange organer med muskuløse haler, og bor i sprækker eller huler på havbunden", 450.00f, new List<Category>() {mad, fisk, fileterOgFars});
+            Item kærnemælk = new Item("kærnemælk", "kærnemælk henviser til en række af mælkedrikke. Oprindeligt kærnemælk var væsken efterladt efter kærning smør ud af fløde", 6.95f, new List<Category>() {mad, mejeri, mælkOgFløde});
+            Item chokoRugbrødsboller = new Item("choko rugbrødsboller", "super lækre chokoladefyldte rugbrødsboller", 40.00f, new List<Category>() { mad, brødOgKager, rugbrød });
+            Item carbernetSauvignon = new Item("Carbernet Sauvignon", "denne vin stammer fra Los Morros ejendom i Maipo-dalen, der er den første vindyrknings dal i Chile til at blive internationalt anerkendt for sin fremragende Cabernet Sauvignon", 129.95f, new List<Category>() {mad, vin, rødvin});
+            Item hyldebærSaft = new Item("hyldebær saft", "juice er en væske (drik), der naturligt findes i frugt og grøntsager", 21.95f, new List<Category>() {mad, drikkevarer, juiceSaftOgMost});
+            Item colafantasi = new Item("colafantasi", "dejlig sukkerfyldt væske", 14.95f, new List<Category>() {mad, drikkevarer, juiceSaftOgMost});
+            Item hvedemel = new Item("hvedemel", "mel er et pulver fremstillet ved formaling af ubehandlede korn eller andre frø eller rødder", 16.00f, new List<Category>() {mad, kolonial, bagning});
+            Item nøddemix = new Item("nøddemix", "En nød er en frugt, der består af en hård skal og en frø, som er generelt spiselige", 23.00f, new List<Category>() {mad, kolonial, bagning});
+            Item chokoladetærte = new Item("chokoladetærte", "dejlig chokoladetærte", 32.95f, new List<Category>() {mad, kolonial, bagning});
+            Item millionbøf = new Item("millionbøf", "med kartoffelmos", 18.75f, new List<Category>() {mad, frost, middagsretter});
+            Item finskSødLakrids = new Item("finsk sød lakrids", "lakrids, eller lakrids, er roden af Glycyrrhiza glabra, hvorfra en sød smag kan udvindes", 26.00f, new List<Category>() {mad, kiosk, slik});
+            Item brystkarameller = new Item("brystkarameller", "bolcher som i gamle dage", 29.95f, new List<Category>() {mad, kiosk, slik});
+            Item vitaminC = new Item("vitaminC", "vitamin C eller L-ascorbinsyre, eller blot ascorbat (anionen af ascorbinsyre), er et vigtigt næringsstof for mennesker og visse andre dyrearter", 65.00f, new List<Category>() {mad, pleje, vitaminerOgKosttilskud});
+            Item proteinbar = new Item("proteinbar", "bliv bomstærk", 20.00f, new List<Category>() {mad, pleje, vitaminerOgKosttilskud});
+            Item toiletpapir = new Item("toiletpapir", "3-lags papir fremstillet af ny papirmasse bleget med brintoverilte.", 35.00f, new List<Category>() {husholdning, køkkenrulleOgToiletpapir});
 
             items.Add(datterinoTomater);
             items.Add(vildmoseKartofler);
@@ -233,7 +149,7 @@ namespace ShoppingWebservice.Data {
             IList<Cart> carts = new List<Cart>();
 
             //tobias cart 1
-            Cart tobiasCart1 = new Cart(DateTime.Now, tobias);
+            Cart tobiasCart1 = new Cart(tobias);
             tobiasCart1.CartItems.Add(new CartItem(hvedemel, hvedemel.Price, 4));
             tobiasCart1.CartItems.Add(new CartItem(jerseyLetmælk, jerseyLetmælk.Price, 6));
             tobiasCart1.CartItems.Add(new CartItem(nøddemix, nøddemix.Price, 2));
@@ -242,7 +158,7 @@ namespace ShoppingWebservice.Data {
             carts.Add(tobiasCart1);
 
             // tobias cart 2
-            Cart tobiasCart2 = new Cart(DateTime.Now, tobias);
+            Cart tobiasCart2 = new Cart(tobias);
             tobiasCart2.CartItems.Add(new CartItem(oksetyndsteg, oksetyndsteg.Price, 1));
             tobiasCart2.CartItems.Add(new CartItem(vitaminC, vitaminC.Price, 1));
             tobiasCart2.CartItems.Add(new CartItem(kulmulefilet, kulmulefilet.Price, 2));
@@ -251,7 +167,7 @@ namespace ShoppingWebservice.Data {
             carts.Add(tobiasCart2);
 
             // kurt cart 1
-            Cart kurtCart1 = new Cart(DateTime.Now, kurt);
+            Cart kurtCart1 = new Cart(kurt);
             kurtCart1.CartItems.Add(new CartItem(kærnemælk, kærnemælk.Price, 1));
             kurtCart1.CartItems.Add(new CartItem(jomfruhummer, jomfruhummer.Price, 1));
             kurtCart1.CartItems.Add(new CartItem(vildmoseKartofler, vildmoseKartofler.Price, 2));

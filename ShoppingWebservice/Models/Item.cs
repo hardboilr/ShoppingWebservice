@@ -17,6 +17,7 @@ namespace ShoppingWebservice.Models {
 
         [StringLength(200)]
         [Required]
+
         public string Name { get; set; }
 
         public string Description { get; set; }
@@ -28,10 +29,11 @@ namespace ShoppingWebservice.Models {
 
         public Item() { }
 
-        public Item(string name, string description, float price) {
+        public Item(string name, string description, float price, List<Category> categories) {
             Name = name;
             Description = description;
             Price = price;
+            Categories = categories;
         }
     }
 }

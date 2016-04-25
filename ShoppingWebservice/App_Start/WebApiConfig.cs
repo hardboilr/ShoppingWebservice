@@ -16,9 +16,8 @@ namespace ShoppingWebservice {
             //http://stackoverflow.com/questions/9847564/how-do-i-get-asp-net-web-api-to-return-json-instead-of-xml-using-chrome/20556625#20556625
             config.Formatters.JsonFormatter.SupportedMediaTypes.Add(new MediaTypeHeaderValue("application/json"));
 
-
             config.Routes.MapHttpRoute(
-                name: "DefaultApi",
+                name: "ShoppingApi",
                 routeTemplate: "api/{controller}/{id}",
                 defaults: new { id = RouteParameter.Optional }
             );
