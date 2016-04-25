@@ -6,13 +6,20 @@ using System.Linq;
 using System.Web;
 
 namespace ShoppingWebservice.Models {
+
+    [Table("Category")]
     public class Category {
 
         [Key]
         public int CategoryId { get; set; }
+
+        [StringLength(100)]
+        [Required]
         public string CategoryName { get; set; }
+
         public string Description { get; set; }
-        public List<Item> Items { get; set; }
+
+        public List<Item> Items { get; set; } = new List<Item>();
 
         public Category() { }
 

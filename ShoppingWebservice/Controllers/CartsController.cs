@@ -6,52 +6,50 @@ using System.Data.Entity.Infrastructure;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
-using System.Net.Http.Formatting;
 using System.Web.Http;
 using System.Web.Http.Description;
 using ShoppingWebservice.Models;
 
 namespace ShoppingWebservice.Controllers
 {
-    public class UsersController : ApiController
-
-
+    public class CartsController : ApiController
     {
         private ShoppingContext db = new ShoppingContext();
 
-        //GET: api/Users
-        public IQueryable<User> GetUsers() {
-            return db.Users;
+        // GET: api/Carts
+        public IQueryable<Cart> GetCarts()
+        {
+            return db.Carts;
         }
 
-        // GET: api/Users/5
-        [ResponseType(typeof(User))]
-        public IHttpActionResult GetUser(int id)
+        // GET: api/Carts/5
+        [ResponseType(typeof(Cart))]
+        public IHttpActionResult GetCart(int id)
         {
-            User user = db.Users.Find(id);
-            if (user == null)
+            Cart cart = db.Carts.Find(id);
+            if (cart == null)
             {
                 return NotFound();
             }
 
-            return Ok(user);
+            return Ok(cart);
         }
 
-        // PUT: api/Users/5
+        // PUT: api/Carts/5
         [ResponseType(typeof(void))]
-        public IHttpActionResult PutUser(int id, User user)
+        public IHttpActionResult PutCart(int id, Cart cart)
         {
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
             }
 
-            if (id != user.UserId)
+            if (id != cart.CartId)
             {
                 return BadRequest();
             }
 
-            db.Entry(user).State = EntityState.Modified;
+            db.Entry(cart).State = EntityState.Modified;
 
             try
             {
@@ -59,7 +57,7 @@ namespace ShoppingWebservice.Controllers
             }
             catch (DbUpdateConcurrencyException)
             {
-                if (!UserExists(id))
+                if (!CartExists(id))
                 {
                     return NotFound();
                 }
@@ -72,35 +70,35 @@ namespace ShoppingWebservice.Controllers
             return StatusCode(HttpStatusCode.NoContent);
         }
 
-        // POST: api/Users
-        [ResponseType(typeof(User))]
-        public IHttpActionResult PostUser(User user)
+        // POST: api/Carts
+        [ResponseType(typeof(Cart))]
+        public IHttpActionResult PostCart(Cart cart)
         {
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
             }
 
-            db.Users.Add(user);
+            db.Carts.Add(cart);
             db.SaveChanges();
 
-            return CreatedAtRoute("DefaultApi", new { id = user.UserId }, user);
+            return CreatedAtRoute("DefaultApi", new { id = cart.CartId }, cart);
         }
 
-        // DELETE: api/Users/5
-        [ResponseType(typeof(User))]
-        public IHttpActionResult DeleteUser(int id)
+        // DELETE: api/Carts/5
+        [ResponseType(typeof(Cart))]
+        public IHttpActionResult DeleteCart(int id)
         {
-            User user = db.Users.Find(id);
-            if (user == null)
+            Cart cart = db.Carts.Find(id);
+            if (cart == null)
             {
                 return NotFound();
             }
 
-            db.Users.Remove(user);
+            db.Carts.Remove(cart);
             db.SaveChanges();
 
-            return Ok(user);
+            return Ok(cart);
         }
 
         protected override void Dispose(bool disposing)
@@ -112,9 +110,9 @@ namespace ShoppingWebservice.Controllers
             base.Dispose(disposing);
         }
 
-        private bool UserExists(int id)
+        private bool CartExists(int id)
         {
-            return db.Users.Count(e => e.UserId == id) > 0;
+            return db.Carts.Count(e => e.CartId == id) > 0;
         }
     }
 }

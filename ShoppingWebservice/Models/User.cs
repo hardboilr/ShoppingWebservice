@@ -1,15 +1,37 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Web;
+using Newtonsoft.Json;
+using ShoppingWebservice.JsonConverters;
 
 namespace ShoppingWebservice.Models {
+
+    [JsonConverter(typeof(UserJson))]
+    [Table("User")]
     public class User {
-        public int UserId { get; private set; }
+
+        [Key]
+        public int UserId { get; set; }
+
+        [StringLength(50)]
+        [Required]
         public string FirstName { get; set; }
+
+        [StringLength(50)]
+        [Required]
         public string LastName { get; set; }
+
+        [StringLength(100)]
+        [Required]
         public string Email { get; set; }
+
+        [StringLength(200)]
+        [Required]
         public string Address { get; set; } //ex. "Smallegade 46A, 2. th., 2000 Frederiksberg"
+
         public IList<Cart> Carts { get; set; } = new List<Cart>();
 
         public User() { }

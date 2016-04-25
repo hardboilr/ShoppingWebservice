@@ -6,52 +6,50 @@ using System.Data.Entity.Infrastructure;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
-using System.Net.Http.Formatting;
 using System.Web.Http;
 using System.Web.Http.Description;
 using ShoppingWebservice.Models;
 
 namespace ShoppingWebservice.Controllers
 {
-    public class UsersController : ApiController
-
-
+    public class CartItemsController : ApiController
     {
         private ShoppingContext db = new ShoppingContext();
 
-        //GET: api/Users
-        public IQueryable<User> GetUsers() {
-            return db.Users;
+        // GET: api/CartItems
+        public IQueryable<CartItem> GetCartItems()
+        {
+            return db.CartItems;
         }
 
-        // GET: api/Users/5
-        [ResponseType(typeof(User))]
-        public IHttpActionResult GetUser(int id)
+        // GET: api/CartItems/5
+        [ResponseType(typeof(CartItem))]
+        public IHttpActionResult GetCartItem(int id)
         {
-            User user = db.Users.Find(id);
-            if (user == null)
+            CartItem cartItem = db.CartItems.Find(id);
+            if (cartItem == null)
             {
                 return NotFound();
             }
 
-            return Ok(user);
+            return Ok(cartItem);
         }
 
-        // PUT: api/Users/5
+        // PUT: api/CartItems/5
         [ResponseType(typeof(void))]
-        public IHttpActionResult PutUser(int id, User user)
+        public IHttpActionResult PutCartItem(int id, CartItem cartItem)
         {
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
             }
 
-            if (id != user.UserId)
+            if (id != cartItem.CartItemId)
             {
                 return BadRequest();
             }
 
-            db.Entry(user).State = EntityState.Modified;
+            db.Entry(cartItem).State = EntityState.Modified;
 
             try
             {
@@ -59,7 +57,7 @@ namespace ShoppingWebservice.Controllers
             }
             catch (DbUpdateConcurrencyException)
             {
-                if (!UserExists(id))
+                if (!CartItemExists(id))
                 {
                     return NotFound();
                 }
@@ -72,35 +70,35 @@ namespace ShoppingWebservice.Controllers
             return StatusCode(HttpStatusCode.NoContent);
         }
 
-        // POST: api/Users
-        [ResponseType(typeof(User))]
-        public IHttpActionResult PostUser(User user)
+        // POST: api/CartItems
+        [ResponseType(typeof(CartItem))]
+        public IHttpActionResult PostCartItem(CartItem cartItem)
         {
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
             }
 
-            db.Users.Add(user);
+            db.CartItems.Add(cartItem);
             db.SaveChanges();
 
-            return CreatedAtRoute("DefaultApi", new { id = user.UserId }, user);
+            return CreatedAtRoute("DefaultApi", new { id = cartItem.CartItemId }, cartItem);
         }
 
-        // DELETE: api/Users/5
-        [ResponseType(typeof(User))]
-        public IHttpActionResult DeleteUser(int id)
+        // DELETE: api/CartItems/5
+        [ResponseType(typeof(CartItem))]
+        public IHttpActionResult DeleteCartItem(int id)
         {
-            User user = db.Users.Find(id);
-            if (user == null)
+            CartItem cartItem = db.CartItems.Find(id);
+            if (cartItem == null)
             {
                 return NotFound();
             }
 
-            db.Users.Remove(user);
+            db.CartItems.Remove(cartItem);
             db.SaveChanges();
 
-            return Ok(user);
+            return Ok(cartItem);
         }
 
         protected override void Dispose(bool disposing)
@@ -112,9 +110,9 @@ namespace ShoppingWebservice.Controllers
             base.Dispose(disposing);
         }
 
-        private bool UserExists(int id)
+        private bool CartItemExists(int id)
         {
-            return db.Users.Count(e => e.UserId == id) > 0;
+            return db.CartItems.Count(e => e.CartItemId == id) > 0;
         }
     }
 }
