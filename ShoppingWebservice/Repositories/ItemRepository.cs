@@ -22,11 +22,12 @@ namespace ShoppingWebservice.Repositories {
 
                 foreach (var i in query) {
                     if (i.Name.Equals(item.Name)) {
-                        message = "It seems that you're trying to create an item already in the database: " + i;
+                        return "It seems that you're trying to create an item already in the database: " + i;
                     }
                 }
                 db.Items.Add(item);
                 db.SaveChanges();
+                
             }
             return message;
         }

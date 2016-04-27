@@ -33,7 +33,6 @@ namespace ShoppingWebservice.Controllers {
                 return Content(HttpStatusCode.BadRequest, ModelState);
             }
         }
-
         [Route("all")]
         public IHttpActionResult GetAllItems() {
             List<Item> items = _itemRepository.GetAllItems();

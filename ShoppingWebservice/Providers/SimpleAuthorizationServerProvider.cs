@@ -1,11 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
+﻿using System.Diagnostics;
 using System.Security.Claims;
 using System.Threading.Tasks;
-using System.Web;
-using Microsoft.AspNet.Identity.EntityFramework;
 using Microsoft.Owin.Security.OAuth;
+using ShoppingWebservice.Models;
 using ShoppingWebservice.Repositories;
 
 namespace ShoppingWebservice.Providers {
@@ -18,15 +15,18 @@ namespace ShoppingWebservice.Providers {
 
             context.OwinContext.Response.Headers.Add("Access-Control-Allow-Origin", new[] { "*" });
 
+            Debug.WriteLine(context.UserName + " " + context.Password);
             using (AuthRepository _repo = new AuthRepository()) {
-                IdentityUser user = await _repo.FindUser(context.UserName, context.Password);
+                User user = await _repo.FindUser(context.UserName, context.Password);
 
                 if (user == null) {
                     context.SetError("invalid_grant", "The user name or password is incorrect.");
                     return;
                 }
+
             }
 
+            
             var identity = new ClaimsIdentity(context.Options.AuthenticationType);
             identity.AddClaim(new Claim("sub", context.UserName));
             identity.AddClaim(new Claim("role", "user"));

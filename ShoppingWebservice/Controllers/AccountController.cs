@@ -6,11 +6,11 @@ using System.Net.Http;
 using System.Threading.Tasks;
 using System.Web.Http;
 using Microsoft.AspNet.Identity;
+using Newtonsoft.Json.Linq;
 using ShoppingWebservice.Models;
 using ShoppingWebservice.Repositories;
 
-namespace ShoppingWebservice.Controllers
-{
+namespace ShoppingWebservice.Controllers {
     [RoutePrefix("api/Account")]
     public class AccountController : ApiController {
         private AuthRepository _repo = null;
@@ -22,51 +22,23 @@ namespace ShoppingWebservice.Controllers
         // POST api/Account/Register
         [AllowAnonymous]
         [Route("Register")]
-        public async Task<IHttpActionResult> Register(User userModel) {
+        public IHttpActionResult Register(User userModel) {
             if (!ModelState.IsValid) {
                 return BadRequest(ModelState);
             }
+            dynamic json = new JObject();
 
-            IdentityResult result = await _repo.RegisterUser(userModel);
+            string result = _repo.RegisterUser(userModel);
 
-            IHttpActionResult errorResult = GetErrorResult(result);
-
-            if (errorResult != null) {
-                return errorResult;
+            if (result.Length <= 0) {
+                json.message = userModel.UserName + " successfully created";
+                return Content(HttpStatusCode.OK, json);
+            } else {
+                json.message = result;
+                return Content(HttpStatusCode.BadRequest, json);
             }
 
-            return Ok();
         }
 
-        protected override void Dispose(bool disposing) {
-            if (disposing) {
-                _repo.Dispose();
-            }
-
-            base.Dispose(disposing);
-        }
-
-        private IHttpActionResult GetErrorResult(IdentityResult result) {
-            if (result == null) {
-                return InternalServerError();
-            }
-
-            if (!result.Succeeded) {
-                if (result.Errors != null) {
-                    foreach (string error in result.Errors) {
-                        ModelState.AddModelError("", error);
-                    }
-                }
-
-                if (ModelState.IsValid) {
-                    // No ModelState errors are available to send, so just return an empty BadRequest.
-                    return BadRequest();
-                }
-
-                return BadRequest(ModelState);
-            }
-
-            return null;
-        }
     }
 }
