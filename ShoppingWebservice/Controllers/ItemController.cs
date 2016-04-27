@@ -1,15 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.Linq;
+﻿using System.Collections.Generic;
 using System.Net;
-using System.Net.Http;
 using System.Web.Http;
 using Newtonsoft.Json.Linq;
 using ShoppingWebservice.Models;
 using ShoppingWebservice.Repositories;
 
 namespace ShoppingWebservice.Controllers {
+
     [RoutePrefix("api/item")]
     public class ItemController : ApiController {
 
@@ -19,63 +16,77 @@ namespace ShoppingWebservice.Controllers {
             _itemRepository = new ItemRepository(); ;
         }
 
-        [HttpPost]
         [Route("create")]
-        public HttpResponseMessage CreateItem(Item item) {
+        public IHttpActionResult CreateItem(Item item) {
             if (ModelState.IsValid) {
-                _itemRepository.CreateItem(item);
-                return new HttpResponseMessage(HttpStatusCode.OK);
+                string message = _itemRepository.CreateItem(item);
+                dynamic responseBody = new JObject();
+
+                if (message.Length <= 0) {
+                    responseBody.message = item.Name + " created successfully.";
+                    return Content(HttpStatusCode.OK, responseBody);
+                } else {
+                    responseBody.message = message;
+                    return Content(HttpStatusCode.BadRequest, responseBody);
+                }
             } else {
-                return Request.CreateErrorResponse(HttpStatusCode.BadRequest, ModelState);
+                return Content(HttpStatusCode.BadRequest, ModelState);
             }
         }
 
-        [HttpPut]
-        [Route("update")]
-        public Item UdpateItem(JObject data) {
-            dynamic json = data;
-            Item item = new Item() {
-                ItemId = json.ItemId,
-                Name = json.ItemName,
-                Description = json.ItemDescription,
-                Price = json.ItemPrice
-            };
-            Category category = new Category() {
-                //CategoryId = json.CategoryId
-            };
-            //return _itemRepository.UpdateItem(item.ItemId, item.Name, item.Description, item.Price, category.CategoryId);
-            return null;
-        }
-
-        [HttpDelete]
-        [Route("delete/{itemId}")]
-        public Item DeleteItem(int itemId) {
-            return _itemRepository.DeleteItem(itemId);
-        }
-
-        [HttpGet]
         [Route("all")]
-        public IList<Item> GetAllItems() {
-            return _itemRepository.GetAllItems();
+        public IHttpActionResult GetAllItems() {
+            List<Item> items = _itemRepository.GetAllItems();
+
+            if (items.Count == 0) {
+                dynamic responseBody = new JObject();
+                responseBody.message = "No items found in database.";
+                return Content(HttpStatusCode.BadRequest, responseBody);
+            } else {
+                return Content(HttpStatusCode.OK, items);
+            }
         }
 
-        [HttpGet]
-        [Route("all/{categoryId}")]
-        public IList<Item> GetallItemsByCategory(int categoryId) {
-            return _itemRepository.GetAllItemsByCategory(categoryId);
-        }
-
-        [HttpGet]
         [Route("{itemId}")]
-        public Item GetItem(int itemId) {
-            return _itemRepository.GetItem(itemId);
+        public IHttpActionResult GetItem(int itemId) {
+            Item item = _itemRepository.GetItem(itemId);
+
+            if (item == null) {
+                dynamic responseBody = new JObject();
+                responseBody.message = "No item found with itemId: " + itemId + ".";
+                return Content(HttpStatusCode.BadRequest, responseBody);
+            } else {
+                return Content(HttpStatusCode.OK, item);
+            }
         }
 
-        // todo: move to category controller
-        //[HttpGet]
-        //[Route("category/{categoryName}")]
-        //public Category GetCategory(string categoryName) {
-        //    return _itemRepository.GetCategory(categoryName);
-        //}
+        [Route("update")]
+        public IHttpActionResult UpdateItem(Item item) {
+            bool success = _itemRepository.UpdateItem(item);
+            dynamic responseBody = new JObject();
+
+            if (success) {
+                responseBody.message = "Successfully updated: " + item.Name + ".";
+                return Content(HttpStatusCode.OK, responseBody);
+            } else {
+                responseBody.message = "Item with id: " + item.ItemId + " not found.";
+                return Content(HttpStatusCode.BadRequest, responseBody);
+            }
+        }
+
+        [Route("delete/{itemId}")]
+        public IHttpActionResult DeleteItem(int itemId) {
+            bool success = _itemRepository.DeleteItem(itemId);
+            dynamic responseBody = new JObject();
+
+            if (success) {
+                responseBody.message = "Successfully deleted item with id: " + itemId + ".";
+                return Content(HttpStatusCode.OK, responseBody);
+            } else {
+                responseBody.message = "Item with id: " + itemId + " not found.";
+                return Content(HttpStatusCode.BadRequest, responseBody);
+            }
+        }
+
     }
 }

@@ -5,11 +5,9 @@ using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Web;
 using Newtonsoft.Json;
-using ShoppingWebservice.JsonConverters;
 
 namespace ShoppingWebservice.Models {
 
-    //[JsonConverter(typeof(UserJson))]
     [Table("User")]
     public class User {
 
