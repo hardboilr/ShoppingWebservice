@@ -33,7 +33,6 @@ namespace ShoppingWebservice.Repositories {
 
         // READ ALL
         public List<Item> GetAllItems() {
-            List<Item> returnItems = new List<Item>();
             using (var db = new ShoppingContext()) {
                 var query =
                     from i in db.Items

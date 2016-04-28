@@ -1,5 +1,7 @@
-﻿using System.Web;
+﻿using System.Runtime.Remoting;
+using System.Web;
 using System.Web.Mvc;
+using ShoppingWebservice.ErrorHandling;
 
 namespace ShoppingWebservice {
     public class FilterConfig {

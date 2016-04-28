@@ -3,22 +3,19 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Net.Http.Headers;
 using System.Web.Http;
+using System.Web.Http.ExceptionHandling;
 using Newtonsoft.Json.Serialization;
 using ShoppingWebservice.ErrorHandling;
 
 namespace ShoppingWebservice {
     public static class WebApiConfig {
 
+        // todo: only json must be returned!
         public static void Register(HttpConfiguration config) {
             // Web API configuration and services
 
             // Web API routes
             config.MapHttpAttributeRoutes();
-
-            //http://stackoverflow.com/questions/9847564/how-do-i-get-asp-net-web-api-to-return-json-instead-of-xml-using-chrome/20556625#20556625
-            
-            // todo: only json must be returned!
-            //config.Formatters.JsonFormatter.SupportedMediaTypes.Add(new MediaTypeHeaderValue("application/json"));
 
             config.Routes.MapHttpRoute(
                 name: "ShoppingApi",
@@ -26,7 +23,8 @@ namespace ShoppingWebservice {
                 defaults: new { id = RouteParameter.Optional }
             );
 
-            //config.Services.Replace(typeof(ServerExceptionHandler), new ServerExceptionHandler());
+            config.Services.Replace(typeof(IExceptionHandler), new ServerExceptionHandler());
+            
         }
     }
 }

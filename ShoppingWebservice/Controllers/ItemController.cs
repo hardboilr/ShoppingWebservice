@@ -1,4 +1,6 @@
-﻿using System.Collections.Generic;
+﻿using System.CodeDom;
+using System.Collections.Generic;
+using System.Data.Entity.Core;
 using System.Net;
 using System.Web.Http;
 using Newtonsoft.Json.Linq;
@@ -20,14 +22,14 @@ namespace ShoppingWebservice.Controllers {
         public IHttpActionResult CreateItem(Item item) {
             if (ModelState.IsValid) {
                 string message = _itemRepository.CreateItem(item);
-                dynamic responseBody = new JObject();
+                dynamic json = new JObject();
 
                 if (message.Length <= 0) {
-                    responseBody.message = item.Name + " created successfully.";
-                    return Content(HttpStatusCode.OK, responseBody);
+                    json.message = item.Name + " created successfully.";
+                    return Content(HttpStatusCode.OK, json);
                 } else {
-                    responseBody.message = message;
-                    return Content(HttpStatusCode.BadRequest, responseBody);
+                    json.message = message;
+                    return Content(HttpStatusCode.BadRequest, json);
                 }
             } else {
                 return Content(HttpStatusCode.BadRequest, ModelState);
@@ -37,7 +39,6 @@ namespace ShoppingWebservice.Controllers {
         [Route("all")]
         public IHttpActionResult GetAllItems() {
             List<Item> items = _itemRepository.GetAllItems();
-
             if (items.Count == 0) {
                 dynamic responseBody = new JObject();
                 responseBody.message = "No items found in database.";
@@ -50,7 +51,6 @@ namespace ShoppingWebservice.Controllers {
         [Route("{itemId}")]
         public IHttpActionResult GetItem(int itemId) {
             Item item = _itemRepository.GetItem(itemId);
-
             if (item == null) {
                 dynamic responseBody = new JObject();
                 responseBody.message = "No item found with itemId: " + itemId + ".";
