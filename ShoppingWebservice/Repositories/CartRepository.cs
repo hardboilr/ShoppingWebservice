@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Data.Entity;
+using System.Linq;
 using ShoppingWebservice.Models;
 
 namespace ShoppingWebservice.Repositories {
@@ -20,7 +22,7 @@ namespace ShoppingWebservice.Repositories {
             using (var db = new ShoppingContext()) {
                 var cart = db.Carts.Find(cartId);
                 var item = db.Items.Find(itemId);
-                cart.CartItems.Add(new CartItem(item, item.Price * quantity, quantity, cart));
+                cart.AddCartItem(new CartItem(item, item.Price * quantity, quantity));
                 db.SaveChanges();
                 returnItem = item;
             }
@@ -29,9 +31,10 @@ namespace ShoppingWebservice.Repositories {
 
         public Cart GetCart(int cartId) {
             Cart returnCart = null;
-            using (var db = new ShoppingContext()) {
-                var cart = db.Carts.Find(cartId);
-                returnCart = cart;
+            using (var db = new ShoppingContext())
+            {
+                var cart = db.Carts.Where(c => c.CartId == cartId).Include(c => c.CartItems.Select(i => i.Item)).Include(c => c.User);
+                returnCart = cart.First();
             }
             return returnCart;
         }

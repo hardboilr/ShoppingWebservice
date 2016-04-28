@@ -77,15 +77,13 @@ namespace ShoppingWebservice.Data {
             IList<Cart> carts = new List<Cart>();
 
             //tobias cart 1
-            Cart kurtCart1 = new Cart(kurt);
-            kurtCart1.CartItems.Add(new CartItem(hvedemel, hvedemel.Price, 4, kurtCart1));
-            kurtCart1.CartItems.Add(new CartItem(jerseyLetmælk, jerseyLetmælk.Price, 6, kurtCart1));
-            kurtCart1.CartItems.Add(new CartItem(nøddemix, nøddemix.Price, 2, kurtCart1));
-            kurtCart1.CartItems.Add(new CartItem(millionbøf, millionbøf.Price, 1, kurtCart1));
-            kurtCart1.CartItems.Add(new CartItem(vitaminC, vitaminC.Price, 1, kurtCart1));
-            carts.Add(kurtCart1);
-
-            carts.Add(kurtCart1);
+            Cart cart1 = new Cart(kurt);
+            cart1.AddCartItem(new CartItem(hvedemel, hvedemel.Price, 4));
+            cart1.AddCartItem(new CartItem(jerseyLetmælk, jerseyLetmælk.Price, 6));
+            cart1.AddCartItem(new CartItem(nøddemix, nøddemix.Price, 2));
+            cart1.AddCartItem(new CartItem(millionbøf, millionbøf.Price, 1));
+            cart1.AddCartItem(new CartItem(vitaminC, vitaminC.Price, 1));
+            carts.Add(cart1);
 
             foreach (Cart cart in carts) {
                 context.Carts.Add(cart);

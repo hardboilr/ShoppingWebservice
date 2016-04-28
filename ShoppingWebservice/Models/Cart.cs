@@ -22,11 +22,17 @@ namespace ShoppingWebservice.Models {
 
         public List<CartItem> CartItems { set; get; } = new List<CartItem>();
 
+        public void AddCartItem(CartItem item) {
+            CartItems.Add(item);
+            item.Cart = this;
+        }
+
         public Cart() { }
    
         public Cart(User user) {
             CreatedAt = DateTime.Now;
             User = user;
+            user.Carts.Add(this);
         }
     }
 }
