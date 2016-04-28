@@ -22,14 +22,15 @@ namespace ShoppingWebservice.Models {
         [Required]
         public int Qty { get; set; }
 
-        public List<Cart> Carts { get; set; } = new List<Cart>();
+        public Cart Cart { get; set; } 
 
         public CartItem() { }
 
-        public CartItem(Item item, float price, int qty) {
+        public CartItem(Item item, float price, int qty, Cart cart) {
             Item = item;
             Price = price;
             Qty = qty;
+            Cart = cart;
         }
     }
 }

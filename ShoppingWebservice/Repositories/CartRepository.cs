@@ -14,12 +14,13 @@ namespace ShoppingWebservice.Repositories {
             }
             return returnCart;
         }
+
         public Item AddItem(int itemId, int cartId, int quantity) {
             Item returnItem = null;
             using (var db = new ShoppingContext()) {
                 var cart = db.Carts.Find(cartId);
                 var item = db.Items.Find(itemId);
-                cart.CartItems.Add(new CartItem(item, item.Price * quantity, quantity));
+                cart.CartItems.Add(new CartItem(item, item.Price * quantity, quantity, cart));
                 db.SaveChanges();
                 returnItem = item;
             }

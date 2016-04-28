@@ -16,21 +16,9 @@ namespace ShoppingWebservice.Data {
         protected override void Seed(ShoppingContext context) {
             // Users
             IList<User> users = new List<User>();
-            User tobias = new User("Tobias", "Jacobsen", "tobias.cbs@gmail.com", "Imaginative Street 123, 4000 Fantasy World");
-            User lennart = new User("Lennart", "Mogensen", "lennart64@yahoo.dk", "Wolly Street 45, 1100 Fitilihu");
-            User meffert = new User("Meffert", "Silleben", "lovesild@gmail.com", "Imaginative Street 60, 4000 Fantasy World");
-            User kurt = new User("Kurt", "Hansen", "kurt69@hotmail.com", "Imaginative Street 12, 4000 Fantasy World");
-            User sonja = new User("Sonja", "Hansen", "sonja54@hotmail.com", "Imaginative Street 12, 4000 Fantasy World");
-            User kaj = new User("Kaj", "Jensen", "kajersej@aol.com", "Wolly Street 3, 1100 Fitilihu");
-            User lise = new User("Lise", "Fnise", "fnis13@gmail.com", "Wolly Street 5, 1100 Fitilihu");
+            User kurt = new User("Kurt", "Hansen", "kurt@gmail.com", "Imaginative Street 123, 4000 Fantasy World");
 
-            users.Add(tobias);
-            users.Add(lennart);
-            users.Add(meffert);
             users.Add(kurt);
-            users.Add(sonja);
-            users.Add(kaj);
-            users.Add(lise);
             foreach (User user in users) {
                 context.Users.Add(user);
             }
@@ -89,30 +77,14 @@ namespace ShoppingWebservice.Data {
             IList<Cart> carts = new List<Cart>();
 
             //tobias cart 1
-            Cart tobiasCart1 = new Cart(tobias);
-            tobiasCart1.CartItems.Add(new CartItem(hvedemel, hvedemel.Price, 4));
-            tobiasCart1.CartItems.Add(new CartItem(jerseyLetmælk, jerseyLetmælk.Price, 6));
-            tobiasCart1.CartItems.Add(new CartItem(nøddemix, nøddemix.Price, 2));
-            tobiasCart1.CartItems.Add(new CartItem(millionbøf, millionbøf.Price, 1));
-            tobiasCart1.CartItems.Add(new CartItem(vitaminC, vitaminC.Price, 1));
-            carts.Add(tobiasCart1);
-
-            // tobias cart 2
-            Cart tobiasCart2 = new Cart(tobias);
-            tobiasCart2.CartItems.Add(new CartItem(oksetyndsteg, oksetyndsteg.Price, 1));
-            tobiasCart2.CartItems.Add(new CartItem(vitaminC, vitaminC.Price, 1));
-            tobiasCart2.CartItems.Add(new CartItem(kulmulefilet, kulmulefilet.Price, 2));
-            tobiasCart2.CartItems.Add(new CartItem(proteinbar, proteinbar.Price, 13));
-            tobiasCart2.CartItems.Add(new CartItem(chokoladetærte, chokoladetærte.Price, 50));
-            carts.Add(tobiasCart2);
-
-            // kurt cart 1
             Cart kurtCart1 = new Cart(kurt);
-            kurtCart1.CartItems.Add(new CartItem(kærnemælk, kærnemælk.Price, 1));
-            kurtCart1.CartItems.Add(new CartItem(jomfruhummer, jomfruhummer.Price, 1));
-            kurtCart1.CartItems.Add(new CartItem(vildmoseKartofler, vildmoseKartofler.Price, 2));
-            kurtCart1.CartItems.Add(new CartItem(datterinoTomater, datterinoTomater.Price, 10));
-            kurtCart1.CartItems.Add(new CartItem(toiletpapir, toiletpapir.Price, 50));
+            kurtCart1.CartItems.Add(new CartItem(hvedemel, hvedemel.Price, 4, kurtCart1));
+            kurtCart1.CartItems.Add(new CartItem(jerseyLetmælk, jerseyLetmælk.Price, 6, kurtCart1));
+            kurtCart1.CartItems.Add(new CartItem(nøddemix, nøddemix.Price, 2, kurtCart1));
+            kurtCart1.CartItems.Add(new CartItem(millionbøf, millionbøf.Price, 1, kurtCart1));
+            kurtCart1.CartItems.Add(new CartItem(vitaminC, vitaminC.Price, 1, kurtCart1));
+            carts.Add(kurtCart1);
+
             carts.Add(kurtCart1);
 
             foreach (Cart cart in carts) {
