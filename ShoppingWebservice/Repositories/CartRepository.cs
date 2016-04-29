@@ -1,10 +1,19 @@
 ﻿using System;
 using System.Data.Entity;
+using System.Data.Entity.Validation;
+using System.Diagnostics;
 using System.Linq;
 using ShoppingWebservice.Models;
 
 namespace ShoppingWebservice.Repositories {
-    public class CartRepository {
+    public class CartRepository
+    {
+
+        private ShoppingContext ShoppingContext;
+
+        public CartRepository() {
+            ShoppingContext = new ShoppingContext();
+        }
 
         public Cart CreateCart(int userId) {
             Cart returnCart = null;
@@ -31,7 +40,7 @@ namespace ShoppingWebservice.Repositories {
 
         public Cart GetCart(int cartId) {
             Cart returnCart = null;
-            using (var db = new ShoppingContext())
+            using (var db = ShoppingContext)
             {
                 var cart = db.Carts
                     .Where(c => c.CartId == cartId)
@@ -52,6 +61,33 @@ namespace ShoppingWebservice.Repositories {
                 returnCart = cart;
             }
             return returnCart;
+        }
+
+
+        public string UpdateCarItem(int cartId, CartItem item) {
+            string msg = "";
+            using (var db = ShoppingContext){
+                var existingCartItem = db.CartItems.Find(item.CartItemId);
+                var existingCart = db.Carts.Find(cartId);
+                if (existingCartItem != null && existingCart != null)
+                    {
+                        if (item.Qty <= 0)
+                        {
+                            db.CartItems.Remove(existingCartItem);
+                            msg = "CarItem with " + existingCartItem.CartItemId + "successfully removed.";
+                        } else {
+                            existingCartItem.Cart = existingCart;
+                            existingCartItem.Item = item.Item;
+                            existingCartItem.Price = item.Item.Price * item.Qty;
+                            existingCartItem.Qty = item.Qty;
+                            msg = "Quantity for CarItem with " + existingCartItem.CartItemId +
+                                  "successfully updated to: " + item.Qty + ".";
+                        }
+                        db.SaveChanges();
+                        return msg;
+                    }
+                } 
+            return msg;
         }
     }
 }

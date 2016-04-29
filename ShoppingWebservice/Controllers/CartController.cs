@@ -8,9 +8,11 @@ using Newtonsoft.Json.Linq;
 using ShoppingWebservice.Models;
 using ShoppingWebservice.Repositories;
 
-namespace ShoppingWebservice.Controllers {
+namespace ShoppingWebservice.Controllers
+{
     [RoutePrefix("api/cart")]
-    public class CartController : ApiController {
+    public class CartController : ApiController
+    {
 
         private readonly CartRepository _cartRepository;
 
@@ -39,7 +41,8 @@ namespace ShoppingWebservice.Controllers {
                 dynamic responseBody = new JObject();
                 responseBody.message = "No cart found with cartId: " + cartId + ".";
                 return Content(HttpStatusCode.BadRequest, responseBody);
-            } else {
+            } else
+            {
                 return Content(HttpStatusCode.OK, cart);
             }
         }
@@ -49,5 +52,21 @@ namespace ShoppingWebservice.Controllers {
         public Cart CheckoutCart(int cartId) {
             return _cartRepository.CheckoutCart(cartId);
         }
+
+        [HttpPut]
+        [Route("update/cartItem/{cartId}")]
+        public IHttpActionResult UpdateCartItem(int cartId, CartItem item) {
+           string msg = _cartRepository.UpdateCarItem(cartId, item);
+           dynamic responseBody = new JObject();
+
+            if (msg.Length > 0) {
+                responseBody.message = msg;
+                return Content(HttpStatusCode.OK, responseBody);
+            } else {
+                responseBody.message = "CartItem with id: " + item.CartItemId + " not found.";
+                return Content(HttpStatusCode.BadRequest, responseBody);
+            }
+        }
     }
 }
+

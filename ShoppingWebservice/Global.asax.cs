@@ -2,6 +2,7 @@
 using System.Web.Mvc;
 using System.Web.Optimization;
 using System.Web.Routing;
+using Newtonsoft.Json;
 
 namespace ShoppingWebservice {
     public class WebApiApplication : System.Web.HttpApplication {
@@ -18,6 +19,12 @@ namespace ShoppingWebservice {
             config.Formatters.JsonFormatter
                         .SerializerSettings
                         .ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore;
+
+
+            config.Formatters.JsonFormatter
+                        .SerializerSettings
+                        .NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore;
+
         }
     }
 }
