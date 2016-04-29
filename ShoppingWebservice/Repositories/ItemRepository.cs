@@ -5,77 +5,155 @@ using System.Net;
 using System.Net.Http;
 using System.Web.Http;
 using Newtonsoft.Json.Linq;
+using ShoppingWebservice.DTO;
 using ShoppingWebservice.ErrorHandling;
 using ShoppingWebservice.Models;
 
 namespace ShoppingWebservice.Repositories {
     public class ItemRepository {
 
-        // CREATE
-        public string CreateItem(Item item) {
-            string message = "";
-            using (var db = new ShoppingContext()) {
-                // check for existing items with same name
-                var query =
-                    from i in db.Items
-                    select i;
+        private readonly ShoppingContext _shoppingContext;
 
-                foreach (var i in query) {
-                    if (i.Name.Equals(item.Name)) {
-                        message = "It seems that you're trying to create an item already in the database: " + i;
-                    }
+        public ItemRepository() {
+            _shoppingContext = new ShoppingContext();
+        }
+
+        // CREATE
+        public Transaction CreateItem(Item item) {
+            using (var db = _shoppingContext) {
+                // check for existing items with same name
+
+                Item it = IfItemExists(item);
+                if (it != null) {
+                    return new Transaction {
+                        StatusCode = HttpStatusCode.BadRequest,
+                        Message = "Item already exist",
+                        MessageDetail = "It seems that you're trying to create an item already in the database: " + item
+                    };
                 }
                 db.Items.Add(item);
                 db.SaveChanges();
+                return new Transaction {
+                    StatusCode = HttpStatusCode.OK,
+                    Message = "Ok",
+                    MessageDetail = item.Name + " successfully created."
+                };
             }
-            return message;
         }
 
         // READ ALL
-        public List<Item> GetAllItems() {
-            using (var db = new ShoppingContext()) {
-                var query =
-                    from i in db.Items
-                    select i;
-                return query.ToList();
+        public Transaction GetAllItems() {
+            using (var db = _shoppingContext) {
+                var items = db.Items
+                    .ToList();
+
+                if (!items.Any()) {
+                    return new Transaction {
+                        StatusCode = HttpStatusCode.BadRequest,
+                        Message = "No items",
+                        MessageDetail = "No items found."
+                    };
+                }
+                return new Transaction {
+                    StatusCode = HttpStatusCode.OK,
+                    Message = "Ok",
+                    MessageDetail = "Successfully retrieved items",
+                    Items = items
+                };
             }
         }
 
         // READ PER ID
-        public Item GetItem(int itemId) {
-            using (var db = new ShoppingContext()) {
-                var item = db.Items.Find(itemId);
-                return item;
+        public Transaction GetItem(int itemId) {
+            using (var db = _shoppingContext) {
+                var item = db.Items
+                    .Where(i => i.ItemId == itemId);
+                if (!item.Any()) {
+                    return new Transaction {
+                        StatusCode = HttpStatusCode.BadRequest,
+                        Message = "Not found",
+                        MessageDetail = "Item with id: " + itemId + " not found.",
+                    };
+                }
+                return new Transaction {
+                    StatusCode = HttpStatusCode.OK,
+                    Message = "Ok",
+                    MessageDetail = "Successfully found item with id: " + itemId + ".",
+                    Item = item.First()
+                };
             }
         }
 
         // UPDATE
-        public bool UpdateItem(Item item) {
-            using (var db = new ShoppingContext()) {
-                var existingItem = db.Items.Find(item.ItemId);
-                if (existingItem != null) {
-                    existingItem.Name = item.Name;
-                    existingItem.Description = item.Description;
-                    existingItem.Price = item.Price;
-                    existingItem.Tag = item.Tag;
-                    db.SaveChanges();
-                    return true;
+        public Transaction UpdateItem(Item item) {
+            using (var db = _shoppingContext) {
+                var existingItem = db.Items
+                    .Where(i => i.ItemId == item.ItemId);
+
+                if (!existingItem.Any()) {
+                    return new Transaction {
+                        StatusCode = HttpStatusCode.BadRequest,
+                        Message = "Not found",
+                        MessageDetail = "Item with id: " + item.ItemId + " not found."
+                    };
                 }
+
+                Item it = IfItemExists(item);
+                if (it != null) {
+                    return new Transaction {
+                        StatusCode = HttpStatusCode.BadRequest,
+                        Message = "Item already exist",
+                        MessageDetail = "It seems that you're trying to edit an existing into an item already in the database: " + it
+                    };
+                }
+
+                existingItem.First().Name = item.Name;
+                existingItem.First().Description = item.Description;
+                existingItem.First().Price = item.Price;
+                existingItem.First().Tag = item.Tag;
+                db.SaveChanges();
+                return new Transaction {
+                    StatusCode = HttpStatusCode.OK,
+                    Message = "Ok",
+                    MessageDetail = "Item with id: " + item.ItemId + " successfully updated."
+                };
             }
-            return false;
         }
 
         // DELETE
-        public bool DeleteItem(int itemId) {
-            using (var db = new ShoppingContext()) {
-                var existingItem = db.Items.Find(itemId);
-                if (existingItem != null) {
-                    db.Items.Remove(existingItem);
-                    db.SaveChanges();
-                    return true;
+        public Transaction DeleteItem(int itemId) {
+            using (var db = _shoppingContext) {
+                var existingItem = db.Items.
+                    Where(i => i.ItemId == itemId);
+
+                if (!existingItem.Any()) {
+                    return new Transaction {
+                        StatusCode = HttpStatusCode.BadRequest,
+                        Message = "Not found",
+                        MessageDetail = "Item with id: " + itemId + " not found."
+                    };
                 }
-                return false;
+                db.Items.Remove(existingItem.First());
+                db.SaveChanges();
+                return new Transaction {
+                    StatusCode = HttpStatusCode.OK,
+                    Message = "Ok",
+                    MessageDetail = "Item with id: " + itemId + " successfully deleted."
+                };
             }
+        }
+
+        private static Item IfItemExists(Item item) {
+            using (var db = new ShoppingContext()) {
+                var items = db.Items;
+
+                foreach (var i in items) {
+                    if (i.Name.Equals(item.Name)) {
+                        return i;
+                    }
+                }
+            }
+            return null;
         }
     }
 }

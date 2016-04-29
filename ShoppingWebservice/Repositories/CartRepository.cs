@@ -1,21 +1,18 @@
 ﻿using System;
 using System.Data.Entity;
-using System.Data.Entity.Validation;
 using System.Diagnostics;
 using System.Linq;
 using System.Net;
 using ShoppingWebservice.DTO;
 using ShoppingWebservice.Models;
-using System.Web.Http;
-using Microsoft.Ajax.Utilities;
 
 namespace ShoppingWebservice.Repositories {
     public class CartRepository {
 
-        private readonly ShoppingContext shoppingContext;
+        private readonly ShoppingContext _shoppingContext;
 
         public CartRepository() {
-            shoppingContext = new ShoppingContext();
+            _shoppingContext = new ShoppingContext();
         }
 
         public Transaction CreateCart(int userId) {
@@ -72,7 +69,6 @@ namespace ShoppingWebservice.Repositories {
                 // check if item is already in cart, then update price and qty
                 foreach (var c in cart.First().CartItems) {
                     if (c.Item.ItemId == itemId) {
-                        Debug.WriteLine("Found existing item!");
                         c.Qty = c.Qty + quantity; // update qty
                         c.Price = c.Item.Price * c.Qty; // calculate new sumPrice
                         db.SaveChanges();
@@ -99,7 +95,7 @@ namespace ShoppingWebservice.Repositories {
 
         public string UpdateCarItem(int cartId, CartItem item) {
             string msg = "";
-            using (var db = shoppingContext) {
+            using (var db = _shoppingContext) {
                 var existingCartItem = db.CartItems.Find(item.CartItemId);
                 var existingCart = db.Carts.Find(cartId);
                 if (existingCartItem != null && existingCart != null) {
@@ -123,7 +119,7 @@ namespace ShoppingWebservice.Repositories {
 
         public Cart GetCart(int cartId) {
             Cart returnCart = null;
-            using (var db = shoppingContext) {
+            using (var db = _shoppingContext) {
                 var cart = db.Carts
                     .Where(c => c.CartId == cartId)
                     .Include(c => c.CartItems.Select(i => i.Item))
@@ -228,7 +224,7 @@ namespace ShoppingWebservice.Repositories {
         }
 
         public bool DeleteCarItemfromCart(int cartItemId) {
-            using (var db = shoppingContext) {
+            using (var db = _shoppingContext) {
                 var existingCartItem = db.CartItems.Find(cartItemId);
                 if (existingCartItem != null) {
                     db.CartItems.Remove(existingCartItem);

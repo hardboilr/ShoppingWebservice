@@ -13,5 +13,7 @@ namespace ShoppingWebservice.DTO {
         public string MessageDetail { get; set; }
         public Cart Cart { get; set; }
         public List<Cart> Carts { get; set; }
+        public Item Item { get; set; }
+        public List<Item> Items { get; set; }
     }
 }

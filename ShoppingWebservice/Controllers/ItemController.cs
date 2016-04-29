@@ -1,9 +1,6 @@
-﻿using System.CodeDom;
-using System.Collections.Generic;
-using System.Data.Entity.Core;
-using System.Net;
+﻿using System.Net;
 using System.Web.Http;
-using Newtonsoft.Json.Linq;
+using ShoppingWebservice.DTO;
 using ShoppingWebservice.Models;
 using ShoppingWebservice.Repositories;
 
@@ -18,75 +15,35 @@ namespace ShoppingWebservice.Controllers {
             _itemRepository = new ItemRepository(); ;
         }
 
-        [Route("create")]
+        [HttpPost]
         public IHttpActionResult CreateItem(Item item) {
-            if (ModelState.IsValid) {
-                string message = _itemRepository.CreateItem(item);
-                dynamic json = new JObject();
-
-                if (message.Length <= 0) {
-                    json.message = item.Name + " created successfully.";
-                    return Content(HttpStatusCode.OK, json);
-                } else {
-                    json.message = message;
-                    return Content(HttpStatusCode.BadRequest, json);
-                }
-            } else {
-                return Content(HttpStatusCode.BadRequest, ModelState);
-            }
+            if (!ModelState.IsValid) return Content(HttpStatusCode.BadRequest, ModelState);
+            Transaction trans = _itemRepository.CreateItem(item);
+            return Content(trans.StatusCode, trans);
         }
 
         [Route("all")]
         public IHttpActionResult GetAllItems() {
-            List<Item> items = _itemRepository.GetAllItems();
-            if (items.Count == 0) {
-                dynamic responseBody = new JObject();
-                responseBody.message = "No items found in database.";
-                return Content(HttpStatusCode.BadRequest, responseBody);
-            } else {
-                return Content(HttpStatusCode.OK, items);
-            }
+            Transaction trans = _itemRepository.GetAllItems();
+            return Content(trans.StatusCode, trans);
         }
 
         [Route("{itemId}")]
         public IHttpActionResult GetItem(int itemId) {
-            Item item = _itemRepository.GetItem(itemId);
-            if (item == null) {
-                dynamic responseBody = new JObject();
-                responseBody.message = "No item found with itemId: " + itemId + ".";
-                return Content(HttpStatusCode.BadRequest, responseBody);
-            } else {
-                return Content(HttpStatusCode.OK, item);
-            }
+            Transaction trans = _itemRepository.GetItem(itemId);
+            return Content(trans.StatusCode, trans);
         }
 
-        [Route("update")]
+        [HttpPut]
         public IHttpActionResult UpdateItem(Item item) {
-            bool success = _itemRepository.UpdateItem(item);
-            dynamic responseBody = new JObject();
-
-            if (success) {
-                responseBody.message = "Successfully updated: " + item.Name + ".";
-                return Content(HttpStatusCode.OK, responseBody);
-            } else {
-                responseBody.message = "Item with id: " + item.ItemId + " not found.";
-                return Content(HttpStatusCode.BadRequest, responseBody);
-            }
+            Transaction trans = _itemRepository.UpdateItem(item);
+            return Content(trans.StatusCode, trans);
         }
 
-        [Route("delete/{itemId}")]
+        [Route("{itemId}")]
         public IHttpActionResult DeleteItem(int itemId) {
-            bool success = _itemRepository.DeleteItem(itemId);
-            dynamic responseBody = new JObject();
-
-            if (success) {
-                responseBody.message = "Successfully deleted item with id: " + itemId + ".";
-                return Content(HttpStatusCode.OK, responseBody);
-            } else {
-                responseBody.message = "Item with id: " + itemId + " not found.";
-                return Content(HttpStatusCode.BadRequest, responseBody);
-            }
+            Transaction trans = _itemRepository.DeleteItem(itemId);
+            return Content(trans.StatusCode, trans);
         }
-
     }
 }
