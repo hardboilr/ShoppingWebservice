@@ -67,6 +67,20 @@ namespace ShoppingWebservice.Controllers
                 return Content(HttpStatusCode.BadRequest, responseBody);
             }
         }
+
+        [HttpDelete]
+        [Route("delete/cartItem/{cartItemId}")]
+        public IHttpActionResult DeleteCartItem(int cartItemId) {
+            bool success = _cartRepository.deleteCarItemfromCart(cartItemId);
+            dynamic responseBody = new JObject();
+            if (success) {
+                responseBody.message = "CarItem with id " + cartItemId + " successfully removed.";
+                return Content(HttpStatusCode.OK, responseBody);
+            } else {
+                responseBody.message = "CartItem with id: " + cartItemId + " not found.";
+                return Content(HttpStatusCode.BadRequest, responseBody);
+            }
+        }
     }
 }
 

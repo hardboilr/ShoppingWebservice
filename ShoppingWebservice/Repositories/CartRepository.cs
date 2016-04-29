@@ -74,20 +74,35 @@ namespace ShoppingWebservice.Repositories {
                         if (item.Qty <= 0)
                         {
                             db.CartItems.Remove(existingCartItem);
-                            msg = "CarItem with " + existingCartItem.CartItemId + "successfully removed.";
+                            msg = "CarItem with id " + existingCartItem.CartItemId + " removed.";
                         } else {
                             existingCartItem.Cart = existingCart;
                             existingCartItem.Item = item.Item;
                             existingCartItem.Price = item.Item.Price * item.Qty;
                             existingCartItem.Qty = item.Qty;
-                            msg = "Quantity for CarItem with " + existingCartItem.CartItemId +
-                                  "successfully updated to: " + item.Qty + ".";
+                            msg = "Quantity for CarItem with id " + existingCartItem.CartItemId +
+                                  " successfully updated to: " + item.Qty + ".";
                         }
                         db.SaveChanges();
                         return msg;
                     }
                 } 
             return msg;
+        }
+
+
+        public bool deleteCarItemfromCart(int cartItemId) {
+            using (var db = ShoppingContext)
+            {
+                var existingCartItem = db.CartItems.Find(cartItemId);
+                if (existingCartItem != null)
+                {
+                    db.CartItems.Remove(existingCartItem);
+                    db.SaveChanges();
+                    return true;
+                }
+                return false;
+            }
         }
     }
 }
