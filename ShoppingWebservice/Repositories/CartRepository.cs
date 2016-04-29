@@ -33,8 +33,12 @@ namespace ShoppingWebservice.Repositories {
             Cart returnCart = null;
             using (var db = new ShoppingContext())
             {
-                var cart = db.Carts.Where(c => c.CartId == cartId).Include(c => c.CartItems.Select(i => i.Item)).Include(c => c.User);
-                returnCart = cart.First();
+                var cart = db.Carts
+                    .Where(c => c.CartId == cartId)
+                    .Include(c => c.CartItems.Select(i => i.Item))
+                    .Include(c => c.User);
+
+                returnCart = cart.FirstOrDefault();
             }
             return returnCart;
         }

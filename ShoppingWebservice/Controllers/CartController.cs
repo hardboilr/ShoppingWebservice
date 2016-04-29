@@ -4,6 +4,7 @@ using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Web.Http;
+using Newtonsoft.Json.Linq;
 using ShoppingWebservice.Models;
 using ShoppingWebservice.Repositories;
 
@@ -31,8 +32,16 @@ namespace ShoppingWebservice.Controllers {
 
         [HttpGet]
         [Route("get/{cartId}")]
-        public Cart GetCart(int cartId) {
-            return _cartRepository.GetCart(cartId);
+        public IHttpActionResult GetCart(int cartId) {
+            Cart cart = _cartRepository.GetCart(cartId);
+            if (cart == null)
+            {
+                dynamic responseBody = new JObject();
+                responseBody.message = "No cart found with cartId: " + cartId + ".";
+                return Content(HttpStatusCode.BadRequest, responseBody);
+            } else {
+                return Content(HttpStatusCode.OK, cart);
+            }
         }
 
         [HttpPut]
