@@ -12,6 +12,12 @@ using Microsoft.Ajax.Utilities;
 namespace ShoppingWebservice.Repositories {
     public class CartRepository {
 
+        private readonly ShoppingContext shoppingContext;
+
+        public CartRepository() {
+            shoppingContext = new ShoppingContext();
+        }
+
         public Transaction CreateCart(int userId) {
             using (var db = new ShoppingContext()) {
                 var user = db.Users.Find(userId);
@@ -41,7 +47,7 @@ namespace ShoppingWebservice.Repositories {
                     .Where(c => c.CartId == cartId)
                     .Include(c => c.CartItems.Select(i => i.Item))
                     .Include(c => c.User);
-                    
+
 
                 // cart not found
                 if (cart == null || !cart.Any()) {
@@ -91,14 +97,39 @@ namespace ShoppingWebservice.Repositories {
             }
         }
 
+        public string UpdateCarItem(int cartId, CartItem item) {
+            string msg = "";
+            using (var db = shoppingContext) {
+                var existingCartItem = db.CartItems.Find(item.CartItemId);
+                var existingCart = db.Carts.Find(cartId);
+                if (existingCartItem != null && existingCart != null) {
+                    if (item.Qty <= 0) {
+                        db.CartItems.Remove(existingCartItem);
+                        msg = "CarItem with id " + existingCartItem.CartItemId + " removed.";
+                    } else {
+                        existingCartItem.Cart = existingCart;
+                        existingCartItem.Item = item.Item;
+                        existingCartItem.Price = item.Item.Price * item.Qty;
+                        existingCartItem.Qty = item.Qty;
+                        msg = "Quantity for CarItem with id " + existingCartItem.CartItemId +
+                              " successfully updated to: " + item.Qty + ".";
+                    }
+                    db.SaveChanges();
+                    return msg;
+                }
+            }
+            return msg;
+        }
+
         public Cart GetCart(int cartId) {
             Cart returnCart = null;
-            using (var db = new ShoppingContext()) {
+            using (var db = shoppingContext) {
                 var cart = db.Carts
                     .Where(c => c.CartId == cartId)
                     .Include(c => c.CartItems.Select(i => i.Item))
                     .Include(c => c.User);
-                returnCart = cart.First();
+
+                returnCart = cart.FirstOrDefault();
             }
             return returnCart;
         }
@@ -193,6 +224,18 @@ namespace ShoppingWebservice.Repositories {
                     Message = "Ok",
                     MessageDetail = "Cart with id: " + cartId + " successfully deleted."
                 };
+            }
+        }
+
+        public bool DeleteCarItemfromCart(int cartItemId) {
+            using (var db = shoppingContext) {
+                var existingCartItem = db.CartItems.Find(cartItemId);
+                if (existingCartItem != null) {
+                    db.CartItems.Remove(existingCartItem);
+                    db.SaveChanges();
+                    return true;
+                }
+                return false;
             }
         }
     }
