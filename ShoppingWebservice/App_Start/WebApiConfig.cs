@@ -1,9 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Net.Http.Headers;
-using System.Web.Http;
+﻿using System.Web.Http;
 using System.Web.Http.ExceptionHandling;
+using Newtonsoft.Json;
 using Newtonsoft.Json.Serialization;
 using ShoppingWebservice.ErrorHandling;
 
@@ -23,8 +20,21 @@ namespace ShoppingWebservice {
                 defaults: new { id = RouteParameter.Optional }
             );
 
+            // global exception handler
             config.Services.Replace(typeof(IExceptionHandler), new ServerExceptionHandler());
-            
+
+            // avoid stackoverflow exceptions on entities with loop refs
+            config.Formatters.JsonFormatter
+                        .SerializerSettings
+                        .ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore;
+
+            // camelcase json responses
+            config.Formatters.JsonFormatter.SerializerSettings.ContractResolver = new CamelCasePropertyNamesContractResolver();
+
+            // ignore null values 
+            config.Formatters.JsonFormatter.SerializerSettings.NullValueHandling = NullValueHandling.Ignore;
+
+
         }
     }
 }

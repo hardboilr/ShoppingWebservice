@@ -13,6 +13,7 @@ namespace ShoppingWebservice.Models {
         [Key]
         public int CartId { get; set; }
 
+        [Required]
         public DateTime CreatedAt { get; set; }
 
         public DateTime? CheckedOutAt { get; set; } // ? is to allow null
@@ -30,7 +31,7 @@ namespace ShoppingWebservice.Models {
         public Cart() { }
    
         public Cart(User user) {
-            CreatedAt = DateTime.Now;
+            CreatedAt = DateTime.UtcNow;
             User = user;
             user.Carts.Add(this);
         }

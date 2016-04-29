@@ -47,6 +47,15 @@ namespace ShoppingWebservice.Data {
             Item proteinbar = new Item("proteinbar", "bliv bomstærk", 20.00f, "mad, pleje, vitaminerOgKosttilskud");
             Item toiletpapir = new Item("toiletpapir", "3-lags papir fremstillet af ny papirmasse bleget med brintoverilte.", 35.00f, "husholdning, køkkenrulleOgToiletpapir");
 
+            Item granaPadano = new Item("Grana Padano", "Den dufter af parmesan. Den knaser, har smag af salt og ægte umamismag, der bliver hængende i munden længe efter.", 54.00f, "mad,mejeri,ost");
+            Item landana = new Item("Landana", "Smagfuld, blød og cremet. Naturligt lagret på træ. Produceret efter gamle hollandske ostetraditioner. 100% mælk fra fritgående køer.", 44.95f, "mad,mejeri,ost");
+            Item flødeost = new Item("Flødeost", "m. hvidløg.", 9.95f, "mad,mejeri,ost");
+            Item brieMarcillat = new Item("Brie Marcillat", "Plasir de Roi Brie.", 11.95f, "mad,mejeri,ost");
+            Item thybo = new Item("Thybo", "Dejlig åååst.", 50.00f, "mad,mejeri,ost");
+            Item flødehavarti = new Item("Flødehavarti", "38% fedt.", 17.95f, "mad,mejeri,ost");
+            Item gammelOlesFar = new Item("Gammel Oles far", "Føj for satan den er ulækker den her.", 62.95f, "mad,mejeri,ost");
+
+
             items.Add(datterinoTomater);
             items.Add(vildmoseKartofler);
             items.Add(roastbeef);
@@ -68,6 +77,13 @@ namespace ShoppingWebservice.Data {
             items.Add(vitaminC);
             items.Add(proteinbar);
             items.Add(toiletpapir);
+            items.Add(granaPadano);
+            items.Add(landana);
+            items.Add(flødeost);
+            items.Add(brieMarcillat);
+            items.Add(thybo);
+            items.Add(flødehavarti);
+            items.Add(gammelOlesFar);
 
             foreach (Item item in items) {
                 context.Items.Add(item);
@@ -76,7 +92,7 @@ namespace ShoppingWebservice.Data {
             // Carts
             IList<Cart> carts = new List<Cart>();
 
-            //tobias cart 1
+            //kurt cart 1 - open
             Cart cart1 = new Cart(kurt);
             cart1.AddCartItem(new CartItem(hvedemel, hvedemel.Price, 4));
             cart1.AddCartItem(new CartItem(jerseyLetmælk, jerseyLetmælk.Price, 6));
@@ -84,6 +100,22 @@ namespace ShoppingWebservice.Data {
             cart1.AddCartItem(new CartItem(millionbøf, millionbøf.Price, 1));
             cart1.AddCartItem(new CartItem(vitaminC, vitaminC.Price, 1));
             carts.Add(cart1);
+
+            //kurt cart 2 - open
+            Cart cart2 = new Cart(kurt);
+            cart2.AddCartItem(new CartItem(toiletpapir, toiletpapir.Price, 35));
+            cart2.AddCartItem(new CartItem(proteinbar, proteinbar.Price, 6));
+            carts.Add(cart2);
+
+            //kurt cart 3 - closed
+            Cart cart3 = new Cart(kurt);
+            cart3.AddCartItem(new CartItem(flødeost, flødeost.Price, 1));
+            cart3.AddCartItem(new CartItem(millionbøf, millionbøf.Price, 1));
+            cart3.AddCartItem(new CartItem(oksetyndsteg, oksetyndsteg.Price, 1));
+            cart3.AddCartItem(new CartItem(thybo, thybo.Price, 2));
+            cart3.AddCartItem(new CartItem(chokoladetærte, chokoladetærte.Price, 2));
+            cart3.CheckedOutAt = DateTime.UtcNow.AddHours(2);
+            carts.Add(cart3);
 
             foreach (Cart cart in carts) {
                 context.Carts.Add(cart);

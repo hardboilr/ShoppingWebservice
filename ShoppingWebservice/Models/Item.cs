@@ -33,6 +33,12 @@ namespace ShoppingWebservice.Models {
             Tag = tag;
         }
 
+        // http://www.newtonsoft.com/json/help/html/SerializationGuide.htm
+        // will not serialize CartItems, thereby not returning it in json-response body
+        public bool ShouldSerializeCartItems() {
+            return false;
+        }
+
         public override string ToString() {
             return "Item: " + ItemId + ", " + Name + ", " + Description + ", " + Price + ", " + Tag;
         }

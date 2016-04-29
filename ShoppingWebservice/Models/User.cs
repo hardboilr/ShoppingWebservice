@@ -41,5 +41,10 @@ namespace ShoppingWebservice.Models {
             Address = address;
         }
 
+        // will not serialize Carts, thereby not returning it in json-response body
+        public bool ShouldSerializeCarts() {
+            return false;
+        }
+
     }
 }
