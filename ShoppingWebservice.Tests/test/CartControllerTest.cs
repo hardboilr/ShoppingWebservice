@@ -16,20 +16,8 @@ namespace ShoppingWebservice.Tests.test {
         [TestMethod]
         public void GetCartWithId() {
             // Act
-            //IHttpActionResult actionResult = _controller.GetCart(1);
-
             var resultRaw = _controller.GetCart(1);
             NegotiatedContentResult<Transaction> result = (NegotiatedContentResult<Transaction>) resultRaw;
-
-
-            //Debug.WriteLine(resultRaw.GetType());
-            //var contentResult = resultRaw as NegotiatedContentResult<>;
-            ////Assert.IsInstanceOfType(resultRaw, typeof(OkNegotiatedContentResult<Transaction>));
-            ////NegotiatedContentResult<Content> negResult = resultRaw as NegotiatedContentResult<Content>;
-
-
-
-
 
             ////// Assert
             Assert.IsNotNull(result);
