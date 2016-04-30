@@ -103,6 +103,7 @@
   <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="test\ItemRepositoryTest.cs" />
+    <Compile Include="test\CartControllerTest.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="App.config" />
