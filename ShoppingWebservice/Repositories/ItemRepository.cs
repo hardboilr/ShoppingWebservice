@@ -23,12 +23,12 @@ namespace ShoppingWebservice.Repositories {
             using (var db = _shoppingContext) {
                 // check for existing items with same name
 
-                Item it = IfItemExists(item);
+                Item it = CheckIfItemExists(item, false);
                 if (it != null) {
                     return new Transaction {
                         StatusCode = HttpStatusCode.BadRequest,
                         Message = "Item already exist",
-                        MessageDetail = "It seems that you're trying to create an item already in the database: " + item
+                        MessageDetail = "It seems that you're trying to create an item already in the database: " + it
                     };
                 }
                 db.Items.Add(item);
@@ -98,7 +98,7 @@ namespace ShoppingWebservice.Repositories {
                     };
                 }
 
-                Item it = IfItemExists(item);
+                Item it = CheckIfItemExists(item, true);
                 if (it != null) {
                     return new Transaction {
                         StatusCode = HttpStatusCode.BadRequest,
@@ -143,14 +143,23 @@ namespace ShoppingWebservice.Repositories {
             }
         }
 
-        private static Item IfItemExists(Item item) {
+        private static Item CheckIfItemExists(Item item, bool isUpdating) {
             using (var db = new ShoppingContext()) {
                 var items = db.Items;
 
                 foreach (var i in items) {
-                    if (i.Name.Equals(item.Name)) {
-                        return i;
+                    // can only be item with different id
+                    if (isUpdating) {
+                        if (i.Name.Equals(item.Name) && i.ItemId != item.ItemId) {
+                            return i;
+                        }
+                     // can be any item in db
+                    } else {
+                        if (i.Name.Equals(item.Name)) {
+                            return i;
+                        }
                     }
+
                 }
             }
             return null;

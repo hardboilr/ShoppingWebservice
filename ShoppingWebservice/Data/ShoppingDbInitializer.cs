@@ -25,36 +25,34 @@ namespace ShoppingWebservice.Data {
 
             // Items
             IList<Item> items = new List<Item>();
-            Item datterinoTomater = new Item("datterino tomater", "økologiske datterino tomater", 21.00f, "mad, frugtOgGrønt, grøntsager");
-            Item vildmoseKartofler = new Item("vildmose kartofler", "miniature kartofler dyrket i nord jylland", 20.00f, "mad, frugtOgGrønt, grøntsager");
-            Item roastbeef = new Item("roastbeef", "af tyksteg", 210.00f, "mad, kød, oksekød");
-            Item oksetyndsteg = new Item("oksetyndsteg", "lækker, lækker oksetyndsteg til en sulten mavse", 299.00f, "mad, kød, oksekød");
-            Item kulmulefilet = new Item("kulmulefilet", "kulmulefilet med skind (merluccius merluccius)", 160.00f, "mad, fisk, fileterOgFars");
-            Item jerseyLetmælk = new Item("jerseyLetmælk", "irmas ækologiske mælk fra ko", 12.00f, "mad, mejeri, mælkOgFløde");
-            Item jomfruhummer = new Item("jomfruhummer", "de har lange organer med muskuløse haler, og bor i sprækker eller huler på havbunden", 450.00f, "mad, fisk, fileterOgFars");
-            Item kærnemælk = new Item("kærnemælk", "kærnemælk henviser til en række af mælkedrikke. Oprindeligt kærnemælk var væsken efterladt efter kærning smør ud af fløde", 6.95f, "mad, mejeri, mælkOgFløde");
-            Item chokoRugbrødsboller = new Item("choko rugbrødsboller", "super lækre chokoladefyldte rugbrødsboller", 40.00f, "mad, brødOgKager, rugbrød");
-            Item carbernetSauvignon = new Item("Carbernet Sauvignon", "denne vin stammer fra Los Morros ejendom i Maipo-dalen, der er den første vindyrknings dal i Chile til at blive internationalt anerkendt for sin fremragende Cabernet Sauvignon", 129.95f, "mad, vin, rødvin");
-            Item hyldebærSaft = new Item("hyldebær saft", "juice er en væske (drik), der naturligt findes i frugt og grøntsager", 21.95f, "mad, drikkevarer, juiceSaftOgMost");
-            Item colafantasi = new Item("colafantasi", "dejlig sukkerfyldt væske", 14.95f, "mad, drikkevarer, juiceSaftOgMost");
-            Item hvedemel = new Item("hvedemel", "mel er et pulver fremstillet ved formaling af ubehandlede korn eller andre frø eller rødder", 16.00f, "mad, kolonial, bagning");
-            Item nøddemix = new Item("nøddemix", "En nød er en frugt, der består af en hård skal og en frø, som er generelt spiselige", 23.00f, "mad, kolonial, bagning");
-            Item chokoladetærte = new Item("chokoladetærte", "dejlig chokoladetærte", 32.95f, "mad, kolonial, bagning");
-            Item millionbøf = new Item("millionbøf", "med kartoffelmos", 18.75f, "mad, frost, middagsretter");
-            Item finskSødLakrids = new Item("finsk sød lakrids", "lakrids er roden af Glycyrrhiza glabra, hvorfra en sød smag kan udvindes", 26.00f, "mad, kiosk, slik");
-            Item brystkarameller = new Item("brystkarameller", "bolcher som i gamle dage", 29.95f, "mad, kiosk, slik");
-            Item vitaminC = new Item("vitaminC", "vitamin C eller L-ascorbinsyre, eller blot ascorbat (anionen af ascorbinsyre), er et vigtigt næringsstof for mennesker og visse andre dyrearter", 65.00f, "mad, pleje, vitaminerOgKosttilskud");
-            Item proteinbar = new Item("proteinbar", "bliv bomstærk", 20.00f, "mad, pleje, vitaminerOgKosttilskud");
-            Item toiletpapir = new Item("toiletpapir", "3-lags papir fremstillet af ny papirmasse bleget med brintoverilte.", 35.00f, "husholdning, køkkenrulleOgToiletpapir");
-
-            Item granaPadano = new Item("Grana Padano", "Den dufter af parmesan. Den knaser, har smag af salt og ægte umamismag, der bliver hængende i munden længe efter.", 54.00f, "mad,mejeri,ost");
-            Item landana = new Item("Landana", "Smagfuld, blød og cremet. Naturligt lagret på træ. Produceret efter gamle hollandske ostetraditioner. 100% mælk fra fritgående køer.", 44.95f, "mad,mejeri,ost");
-            Item flødeost = new Item("Flødeost", "m. hvidløg.", 9.95f, "mad,mejeri,ost");
-            Item brieMarcillat = new Item("Brie Marcillat", "Plasir de Roi Brie.", 11.95f, "mad,mejeri,ost");
-            Item thybo = new Item("Thybo", "Dejlig åååst.", 50.00f, "mad,mejeri,ost");
-            Item flødehavarti = new Item("Flødehavarti", "38% fedt.", 17.95f, "mad,mejeri,ost");
-            Item gammelOlesFar = new Item("Gammel Oles far", "Føj for satan den er ulækker den her.", 62.95f, "mad,mejeri,ost");
-
+            Item datterinoTomater = new Item("Datterino tomater", "Økologiske datterino tomater", 21.00m, "mad,frugtOgGrønt,grøntsager");
+            Item vildmoseKartofler = new Item("Vildmose kartofler", "Miniature kartofler dyrket i Nordjylland", 20.00m, "mad,frugtOgGrønt,grøntsager");
+            Item roastbeef = new Item("Roastbeef", "Af tyksteg", 210.00m, "mad,kød,oksekød");
+            Item oksetyndsteg = new Item("Oksetyndsteg", "Lækker, lækker oksetyndsteg til en sulten mavse", 299.00m, "mad,kød,oksekød");
+            Item kulmulefilet = new Item("Kulmulefilet", "Kulmulefilet med skind (merluccius merluccius)", 160.00m, "mad,fisk,fileterOgFars");
+            Item jerseyLetmælk = new Item("JerseyLetmælk", "Irmas ækologiske mælk fra ko", 12.00m, "mad,mejeri,mælkOgFløde");
+            Item jomfruhummer = new Item("Jjomfruhummer", "De har lange organer med muskuløse haler, og bor i sprækker eller huler på havbunden", 450.00m, "mad,fisk,fileterOgFars");
+            Item kærnemælk = new Item("Kærnemælk", "Kærnemælk henviser til en række af mælkedrikke. Oprindeligt kærnemælk var væsken efterladt efter kærning smør ud af fløde", 6.95m, "mad,mejeri,mælkOgFløde");
+            Item chokoRugbrødsboller = new Item("Choko rugbrødsboller", "Super lækre chokoladefyldte rugbrødsboller", 40.00m, "mad,brødOgKager,rugbrød");
+            Item carbernetSauvignon = new Item("Carbernet Sauvignon", "Denne vin stammer fra Los Morros ejendom i Maipo-dalen, der er den første vindyrknings dal i Chile til at blive internationalt anerkendt for sin fremragende Cabernet Sauvignon", 129.95m, "mad,vin,rødvin");
+            Item hyldebærSaft = new Item("Hyldebær saft", "Juice er en væske (drik), der naturligt findes i frugt og grøntsager", 21.95m, "mad,drikkevarer,juiceSaftOgMost");
+            Item colafantasi = new Item("Colafantasi", "Dejlig sukkerfyldt væske", 14.95m, "mad,drikkevarer,juiceSaftOgMost");
+            Item hvedemel = new Item("Hvedemel", "Mel er et pulver fremstillet ved formaling af ubehandlede korn eller andre frø eller rødder", 16.00m, "mad,kolonial,bagning");
+            Item nøddemix = new Item("Nøddemix", "En nød er en frugt, der består af en hård skal og en frø, som er generelt spiselige", 23.00m, "mad,kolonial,bagning");
+            Item chokoladetærte = new Item("Chokoladetærte", "Dejlig chokoladetærte", 32.95m, "mad,kolonial,bagning");
+            Item millionbøf = new Item("Millionbøf", "Med kartoffelmos", 18.75m, "mad,frost,middagsretter");
+            Item finskSødLakrids = new Item("Finsk sød lakrids", "Lakrids er roden af Glycyrrhiza glabra, hvorfra en sød smag kan udvindes", 26.00m, "mad,kiosk,slik");
+            Item brystkarameller = new Item("Brystkarameller", "Bolcher som i gamle dage", 29.95m, "mad,kiosk,slik");
+            Item vitaminC = new Item("VitaminC", "Vitamin C eller L-ascorbinsyre, eller blot ascorbat (anionen af ascorbinsyre), er et vigtigt næringsstof for mennesker og visse andre dyrearter", 65.00m, "mad,pleje,vitaminerOgKosttilskud");
+            Item proteinbar = new Item("Proteinbar", "Bliv bomstærk", 20.00m, "mad,pleje,vitaminerOgKosttilskud");
+            Item toiletpapir = new Item("Toiletpapir", "3-lags papir fremstillet af ny papirmasse bleget med brintoverilte.", 35.00m, "husholdning,køkkenrulleOgToiletpapir");
+            Item granaPadano = new Item("Grana Padano", "Den dufter af parmesan. Den knaser, har smag af salt og ægte umamismag, der bliver hængende i munden længe efter.", 54.00m, "mad,mejeri,ost");
+            Item landana = new Item("Landana", "Smagfuld, blød og cremet. Naturligt lagret på træ. Produceret efter gamle hollandske ostetraditioner. 100% mælk fra fritgående køer.", 44.95m, "mad,mejeri,ost");
+            Item flødeost = new Item("Flødeost", "m. hvidløg.", 9.95m, "mad,mejeri,ost");
+            Item brieMarcillat = new Item("Brie Marcillat", "Plasir de Roi Brie.", 11.95m, "mad,mejeri,ost");
+            Item thybo = new Item("Thybo", "Dejlig åååst.", 50.00m, "mad,mejeri,ost");
+            Item flødehavarti = new Item("Flødehavarti", "38% fedt.", 17.95m, "mad,mejeri,ost");
+            Item gammelOlesFar = new Item("Gammel Oles far", "Føj for satan den er ulækker den her.", 62.95m, "mad,mejeri,ost");
 
             items.Add(datterinoTomater);
             items.Add(vildmoseKartofler);

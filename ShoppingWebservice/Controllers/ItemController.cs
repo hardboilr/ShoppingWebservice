@@ -1,6 +1,7 @@
 ﻿using System.Net;
 using System.Web.Http;
 using ShoppingWebservice.DTO;
+using ShoppingWebservice.ErrorHandling;
 using ShoppingWebservice.Models;
 using ShoppingWebservice.Repositories;
 
@@ -12,13 +13,22 @@ namespace ShoppingWebservice.Controllers {
         private readonly ItemRepository _itemRepository;
 
         public ItemController() {
-            _itemRepository = new ItemRepository(); ;
+            _itemRepository = new ItemRepository();
         }
 
         [HttpPost]
         public IHttpActionResult CreateItem(Item item) {
-            if (!ModelState.IsValid) return Content(HttpStatusCode.BadRequest, ModelState);
-            Transaction trans = _itemRepository.CreateItem(item);
+            Transaction trans;
+            if (!ModelState.IsValid) {
+                trans = new Transaction {
+                    StatusCode = HttpStatusCode.BadRequest,
+                    Message = GetJsonMessage(),
+                    MessageDetail = GetJsonDetailMessage(),
+                    Errors = ModelState.AllErrors()
+                };
+                return Content(HttpStatusCode.BadRequest, trans);
+            }
+            trans = _itemRepository.CreateItem(item);
             return Content(trans.StatusCode, trans);
         }
 
@@ -36,7 +46,17 @@ namespace ShoppingWebservice.Controllers {
 
         [HttpPut]
         public IHttpActionResult UpdateItem(Item item) {
-            Transaction trans = _itemRepository.UpdateItem(item);
+            Transaction trans;
+            if (!ModelState.IsValid) {
+                trans = new Transaction {
+                    StatusCode = HttpStatusCode.BadRequest,
+                    Message = GetJsonMessage(),
+                    MessageDetail = GetJsonDetailMessage(),
+                    Errors = ModelState.AllErrors()
+                };
+                return Content(HttpStatusCode.BadRequest, trans);
+            }
+            trans = _itemRepository.UpdateItem(item);
             return Content(trans.StatusCode, trans);
         }
 
@@ -44,6 +64,14 @@ namespace ShoppingWebservice.Controllers {
         public IHttpActionResult DeleteItem(int itemId) {
             Transaction trans = _itemRepository.DeleteItem(itemId);
             return Content(trans.StatusCode, trans);
+        }
+
+        private static string GetJsonMessage() {
+            return "Invalid JSON request";
+        }
+
+        private static string GetJsonDetailMessage() {
+            return "One or more errors was detected in received JSON. Please correct errors and try again.";
         }
     }
 }

@@ -16,8 +16,12 @@ namespace ShoppingWebservice.Models {
 
         public string Description { get; set; }
 
+        // http://stackoverflow.com/questions/9558549/validate-decimal-value-to-2-decimal-places-with-data-annotations
+       
+        //[Range(0.01, 100000000)]
+        [RegularExpression(@"^\d+.\d{0,2}$", ErrorMessage = "Price can't have more than 2 decimal places")]
         [Required]
-        public float Price { get; set; }
+        public decimal? Price { get; set; }
 
         [Required]
         public string  Tag { get; set; }
@@ -26,7 +30,7 @@ namespace ShoppingWebservice.Models {
 
         public Item() { }
 
-        public Item(string name, string description, float price, string tag) {
+        public Item(string name, string description, decimal price, string tag) {
             Name = name;
             Description = description;
             Price = price;

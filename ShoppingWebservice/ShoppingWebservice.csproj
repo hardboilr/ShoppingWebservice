@@ -181,6 +181,8 @@
     <Compile Include="Controllers\ItemController.cs" />
     <Compile Include="Data\ShoppingDbInitializer.cs" />
     <Compile Include="DTO\Transaction.cs" />
+    <Compile Include="ErrorHandling\Error.cs" />
+    <Compile Include="ErrorHandling\ModelStateExtensions.cs" />
     <Compile Include="ErrorHandling\ServerExceptionHandler.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>

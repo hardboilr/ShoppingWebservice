@@ -20,14 +20,14 @@ namespace ShoppingWebservice.Models {
         public Item Item { get; set; }
 
         [Required]
-        public float Price { get; set; }
+        public decimal? Price { get; set; }
 
         [Required]
         public int Qty { get; set; }
 
         public CartItem() { }
 
-        public CartItem(Item item, float price, int qty) {
+        public CartItem(Item item, decimal? price, int qty) {
             Item = item;
             Price = price;
             Qty = qty;

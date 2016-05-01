@@ -1,8 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
+﻿using System.Collections.Generic;
 using System.Net;
-using System.Web;
+using ShoppingWebservice.ErrorHandling;
 using ShoppingWebservice.Models;
 
 namespace ShoppingWebservice.DTO {
@@ -11,6 +9,7 @@ namespace ShoppingWebservice.DTO {
         public HttpStatusCode StatusCode { get; set; }
         public string Message { get; set; }
         public string MessageDetail { get; set; }
+        public IEnumerable<Error> Errors { get; set; }
         public Cart Cart { get; set; }
         public List<Cart> Carts { get; set; }
         public Item Item { get; set; }
