@@ -38,6 +38,15 @@ namespace ShoppingWebservice.Repositories {
         }
 
         public Transaction AddItem(int itemId, int cartId, int quantity) {
+            // negative quantity
+            if (quantity <= 0) {
+                return new Transaction {
+                    StatusCode = HttpStatusCode.BadRequest,
+                    Message = "Forbidden",
+                    MessageDetail = quantity + " is a negative value and therefore not allowed."
+                };
+            }
+
             using (var db = _shoppingContext) {
 
                 var cart = db.Carts
