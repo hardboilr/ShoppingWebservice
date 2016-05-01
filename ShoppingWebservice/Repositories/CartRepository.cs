@@ -16,7 +16,7 @@ namespace ShoppingWebservice.Repositories {
         }
 
         public Transaction CreateCart(int userId) {
-            using (var db = new ShoppingContext()) {
+            using (var db = _shoppingContext) {
                 var user = db.Users.Find(userId);
                 if (user == null) {
                     return new Transaction {
@@ -38,7 +38,16 @@ namespace ShoppingWebservice.Repositories {
         }
 
         public Transaction AddItem(int itemId, int cartId, int quantity) {
-            using (var db = new ShoppingContext()) {
+            // negative quantity
+            if (quantity <= 0) {
+                return new Transaction {
+                    StatusCode = HttpStatusCode.BadRequest,
+                    Message = "Forbidden",
+                    MessageDetail = quantity + " is a negative value and therefore not allowed."
+                };
+            }
+
+            using (var db = _shoppingContext) {
 
                 var cart = db.Carts
                     .Where(c => c.CartId == cartId)
@@ -93,48 +102,72 @@ namespace ShoppingWebservice.Repositories {
             }
         }
 
-        public string UpdateCarItem(int cartId, CartItem item) {
-            string msg = "";
+        public Transaction UpdateCarItem(int cartId, CartItem item) {
             using (var db = _shoppingContext) {
                 var existingCartItem = db.CartItems.Find(item.CartItemId);
                 var existingCart = db.Carts.Find(cartId);
                 if (existingCartItem != null && existingCart != null) {
                     if (item.Qty <= 0) {
                         db.CartItems.Remove(existingCartItem);
-                        msg = "CarItem with id " + existingCartItem.CartItemId + " removed.";
+                        db.SaveChanges();
+                        return new Transaction {
+                            StatusCode = HttpStatusCode.OK,
+                            Message = "Ok",
+                            MessageDetail = item.Item.Name + " Successfully removed from cart."
+                        };
                     } else {
                         existingCartItem.Cart = existingCart;
                         existingCartItem.Item = item.Item;
                         existingCartItem.Price = item.Item.Price * item.Qty;
                         existingCartItem.Qty = item.Qty;
-                        msg = "Quantity for CarItem with id " + existingCartItem.CartItemId +
-                              " successfully updated to: " + item.Qty + ".";
+                        db.SaveChanges();
+                        return new Transaction {
+                            StatusCode = HttpStatusCode.OK,
+                            Message = "Ok",
+                            MessageDetail = "The Quantity for " + existingCartItem.Item.Name +
+                              " was successfully updated to: " + item.Qty + "."
+                        };
                     }
-                    db.SaveChanges();
-                    return msg;
+                   
                 }
             }
-            return msg;
+            return new Transaction {
+                StatusCode = HttpStatusCode.BadRequest,
+                Message = "Not found",
+                MessageDetail = "CartItem with id: " + item.CartItemId + " not found."
+            };
         }
 
-        public Cart GetCart(int cartId) {
-            Cart returnCart = null;
+        public Transaction GetCart(int cartId) {
             using (var db = _shoppingContext) {
                 var cart = db.Carts
                     .Where(c => c.CartId == cartId)
                     .Include(c => c.CartItems.Select(i => i.Item))
                     .Include(c => c.User);
 
-                returnCart = cart.FirstOrDefault();
+                if (!cart.Any())
+                {
+                    return new Transaction {
+                        StatusCode = HttpStatusCode.BadRequest,
+                        Message = "Not found",
+                        MessageDetail = "No cart with id: " +  cartId + " was found."
+                    };
+                }
+
+                return new Transaction {
+                    StatusCode = HttpStatusCode.OK,
+                    Message = "Ok",
+                    MessageDetail = "Cart succesfully found",
+                    Cart = cart.First()
+                };
             }
-            return returnCart;
         }
 
         public Transaction GetAllCartsbyStatus(bool isClosed) {
 
             string status = isClosed ? "closed" : "open";
 
-            using (var db = new ShoppingContext()) {
+            using (var db = _shoppingContext) {
                 var cart = db.Carts
                     .Where(c => c.CheckedOutAt.HasValue == isClosed)
                     .Include(c => c.CartItems.Select(i => i.Item))
@@ -167,7 +200,7 @@ namespace ShoppingWebservice.Repositories {
         }
 
         public Transaction CheckoutCart(int cartId) {
-            using (var db = new ShoppingContext()) {
+            using (var db = _shoppingContext) {
                 var cart = db.Carts
                     .Where(c => c.CartId == cartId)
                     .Include(c => c.CartItems.Select(i => i.Item))
@@ -201,9 +234,9 @@ namespace ShoppingWebservice.Repositories {
         }
 
         public Transaction DeleteCart(int cartId) {
-            using (var db = new ShoppingContext()) {
-                var cart = db.Carts
-                    .First(c => c.CartId == cartId);
+            using (var db = _shoppingContext)
+            {
+                var cart = db.Carts.Find(cartId);
 
                 if (cart == null) {
                     return new Transaction {
@@ -223,15 +256,23 @@ namespace ShoppingWebservice.Repositories {
             }
         }
 
-        public bool DeleteCarItemfromCart(int cartItemId) {
+        public Transaction DeleteCarItemfromCart(int cartItemId) {
             using (var db = _shoppingContext) {
                 var existingCartItem = db.CartItems.Find(cartItemId);
                 if (existingCartItem != null) {
                     db.CartItems.Remove(existingCartItem);
                     db.SaveChanges();
-                    return true;
+                    return new Transaction {
+                        StatusCode = HttpStatusCode.OK,
+                        Message = "Ok",
+                        MessageDetail = "CarItem with id: " + cartItemId + " successfully deleted."
+                    }; 
                 }
-                return false;
+                return new Transaction {
+                    StatusCode = HttpStatusCode.BadRequest,
+                    Message = "Not found",
+                    MessageDetail = "CartItem with id: " + cartItemId + " not found."
+                };
             }
         }
     }
