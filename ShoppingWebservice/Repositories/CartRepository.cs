@@ -113,7 +113,7 @@ namespace ShoppingWebservice.Repositories {
                         return new Transaction {
                             StatusCode = HttpStatusCode.OK,
                             Message = "Ok",
-                            MessageDetail = item.Item.Name + " Successfully removed from cart "
+                            MessageDetail = item.Item.Name + " Successfully removed from cart."
                         };
                     } else {
                         existingCartItem.Cart = existingCart;
@@ -234,9 +234,9 @@ namespace ShoppingWebservice.Repositories {
         }
 
         public Transaction DeleteCart(int cartId) {
-            using (var db = _shoppingContext) {
-                var cart = db.Carts
-                    .First(c => c.CartId == cartId);
+            using (var db = _shoppingContext)
+            {
+                var cart = db.Carts.Find(cartId);
 
                 if (cart == null) {
                     return new Transaction {
@@ -265,7 +265,7 @@ namespace ShoppingWebservice.Repositories {
                     return new Transaction {
                         StatusCode = HttpStatusCode.OK,
                         Message = "Ok",
-                        MessageDetail = "CarItem with id " + cartItemId + " successfully deleted."
+                        MessageDetail = "CarItem with id: " + cartItemId + " successfully deleted."
                     }; 
                 }
                 return new Transaction {

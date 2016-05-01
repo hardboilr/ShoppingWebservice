@@ -7,6 +7,7 @@ using System.Web.UI.WebControls;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using ShoppingWebservice.Controllers;
 using ShoppingWebservice.DTO;
+using ShoppingWebservice.Models;
 
 namespace ShoppingWebservice.Tests.test {
     [TestClass]
@@ -189,6 +190,91 @@ namespace ShoppingWebservice.Tests.test {
             Assert.IsNotNull(result.Content);
             Assert.AreEqual(HttpStatusCode.BadRequest, result.Content.StatusCode);
             Assert.AreEqual("Cart with id: 3 already checked out.", result.Content.MessageDetail);
+        }
+
+        [TestMethod]
+        public void UpdateCartItem() {
+            // Setup
+            Item hvedemel = new Item("hvedemel", "mel er et pulver fremstillet ved formaling af ubehandlede korn eller andre frø eller rødder", 16.00f, "mad, kolonial, bagning");
+            CartItem item = new CartItem(hvedemel, hvedemel.Price, 5);
+            item.CartItemId = 1;
+            // Act
+            var resultRaw = _controller.UpdateCartItem(1, item);
+            NegotiatedContentResult<Transaction> result = (NegotiatedContentResult<Transaction>)resultRaw;
+
+            ////// Assert
+            Assert.IsNotNull(result);
+            Assert.IsNotNull(result.Content);
+            Assert.AreEqual(HttpStatusCode.OK, result.Content.StatusCode);
+            Assert.AreEqual("The Quantity for hvedemel was successfully updated to: 5.", result.Content.MessageDetail);
+        }
+
+        [TestMethod]
+        public void UpdateCartItemWithNegativeQty() {
+            // Setup
+            Item hvedemel = new Item("hvedemel", "mel er et pulver fremstillet ved formaling af ubehandlede korn eller andre frø eller rødder", 16.00f, "mad, kolonial, bagning");
+            CartItem item = new CartItem(hvedemel, hvedemel.Price, -95);
+            item.CartItemId = 1;
+            // Act
+            var resultRaw = _controller.UpdateCartItem(1, item);
+            NegotiatedContentResult<Transaction> result = (NegotiatedContentResult<Transaction>)resultRaw;
+
+            ////// Assert
+            Assert.IsNotNull(result);
+            Assert.IsNotNull(result.Content);
+            Assert.AreEqual(HttpStatusCode.OK, result.Content.StatusCode);
+            Assert.AreEqual("hvedemel Successfully removed from cart.", result.Content.MessageDetail);
+        }
+        [TestMethod]
+        public void DeleteCartItemWithValidId() {
+            // Act
+            var resultRaw = _controller.DeleteCartItem(2);
+            NegotiatedContentResult<Transaction> result = (NegotiatedContentResult<Transaction>)resultRaw;
+
+            ////// Assert
+            Assert.IsNotNull(result);
+            Assert.IsNotNull(result.Content);
+            Assert.AreEqual(HttpStatusCode.OK, result.Content.StatusCode);
+            Assert.AreEqual("CarItem with id: 2 successfully deleted.", result.Content.MessageDetail);
+        }
+
+        [TestMethod]
+        public void DeleteCartItemWithInValidId() {
+            // Act
+            var resultRaw = _controller.DeleteCartItem(156);
+            NegotiatedContentResult<Transaction> result = (NegotiatedContentResult<Transaction>)resultRaw;
+
+            ////// Assert
+            Assert.IsNotNull(result);
+            Assert.IsNotNull(result.Content);
+            Assert.AreEqual(HttpStatusCode.BadRequest, result.Content.StatusCode);
+            Assert.AreEqual("CartItem with id: 156 not found.", result.Content.MessageDetail);
+        }
+
+        [TestMethod]
+        public void DeleteCartWithValidId() {
+            // Act
+            var resultRaw = _controller.DeleteCart(1);
+            NegotiatedContentResult<Transaction> result = (NegotiatedContentResult<Transaction>)resultRaw;
+
+            ////// Assert
+            Assert.IsNotNull(result);
+            Assert.IsNotNull(result.Content);
+            Assert.AreEqual(HttpStatusCode.OK, result.Content.StatusCode);
+            Assert.AreEqual("Cart with id: 1 successfully deleted.", result.Content.MessageDetail);
+        }
+
+        [TestMethod]
+        public void DeleteCartWithInValidId() {
+            // Act
+            var resultRaw = _controller.DeleteCart(156);
+            NegotiatedContentResult<Transaction> result = (NegotiatedContentResult<Transaction>)resultRaw;
+
+            ////// Assert
+            Assert.IsNotNull(result);
+            Assert.IsNotNull(result.Content);
+            Assert.AreEqual(HttpStatusCode.BadRequest, result.Content.StatusCode);
+            Assert.AreEqual("Cart with id: 156 not found.", result.Content.MessageDetail);
         }
 
 
