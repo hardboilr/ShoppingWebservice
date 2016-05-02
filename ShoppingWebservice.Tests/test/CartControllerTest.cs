@@ -195,7 +195,7 @@ namespace ShoppingWebservice.Tests.test {
         [TestMethod]
         public void UpdateCartItem() {
             // Setup
-            Item hvedemel = new Item("hvedemel", "mel er et pulver fremstillet ved formaling af ubehandlede korn eller andre frø eller rødder", 16.00f, "mad, kolonial, bagning");
+            Item hvedemel = new Item("hvedemel", "mel er et pulver fremstillet ved formaling af ubehandlede korn eller andre frø eller rødder", 16.00m, "mad, kolonial, bagning");
             CartItem item = new CartItem(hvedemel, hvedemel.Price, 5);
             item.CartItemId = 1;
             // Act
@@ -212,7 +212,7 @@ namespace ShoppingWebservice.Tests.test {
         [TestMethod]
         public void UpdateCartItemWithNegativeQty() {
             // Setup
-            Item hvedemel = new Item("hvedemel", "mel er et pulver fremstillet ved formaling af ubehandlede korn eller andre frø eller rødder", 16.00f, "mad, kolonial, bagning");
+            Item hvedemel = new Item("hvedemel", "mel er et pulver fremstillet ved formaling af ubehandlede korn eller andre frø eller rødder", 16.00m, "mad, kolonial, bagning");
             CartItem item = new CartItem(hvedemel, hvedemel.Price, -95);
             item.CartItemId = 1;
             // Act
