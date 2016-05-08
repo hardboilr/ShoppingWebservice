@@ -1,19 +1,11 @@
-﻿using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.Data;
-using System.Data.SqlClient;
-using System.Diagnostics;
-using System.Linq;
+﻿using System.Data.SqlClient;
 using System.Net;
 using System.Net.Http;
-using System.Web;
 using System.Web.Http.Filters;
 using ShoppingWebservice.DTO;
 
 namespace ShoppingWebservice.ErrorHandling {
     public class SqlExceptionFilterAttribute : ExceptionFilterAttribute {
-
         public override void OnException(HttpActionExecutedContext context) {
             if (context.Exception is SqlException) {
                 context.Exception.HelpLink 
