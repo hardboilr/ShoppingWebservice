@@ -19,7 +19,7 @@ namespace ShoppingWebservice.Tests.test {
         public void CreateCartWithValidId() {
             // Act
             var resultRaw = _controller.CreateCart(1);
-            NegotiatedContentResult<Transaction> result = (NegotiatedContentResult<Transaction>)resultRaw;
+            NegotiatedContentResult<ResponseDTO> result = (NegotiatedContentResult<ResponseDTO>)resultRaw;
 
             // Assert
             Assert.IsNotNull(result);
@@ -32,7 +32,7 @@ namespace ShoppingWebservice.Tests.test {
         public void CreateCartWithInValidId() {
             // Act
             var resultRaw = _controller.CreateCart(189);
-            NegotiatedContentResult<Transaction> result = (NegotiatedContentResult<Transaction>)resultRaw;
+            NegotiatedContentResult<ResponseDTO> result = (NegotiatedContentResult<ResponseDTO>)resultRaw;
 
             ////// Assert
             Assert.IsNotNull(result);
@@ -45,7 +45,7 @@ namespace ShoppingWebservice.Tests.test {
         public void AddItemWithValidId() {
             // Act
             var resultRaw = _controller.AddItem(1,1,2);
-            NegotiatedContentResult<Transaction> result = (NegotiatedContentResult<Transaction>)resultRaw;
+            NegotiatedContentResult<ResponseDTO> result = (NegotiatedContentResult<ResponseDTO>)resultRaw;
 
             ////// Assert
             Assert.IsNotNull(result);
@@ -57,7 +57,7 @@ namespace ShoppingWebservice.Tests.test {
         public void AddItemWithIValidItemdId() {
             // Act
             var resultRaw = _controller.AddItem(187, 1, 2);
-            NegotiatedContentResult<Transaction> result = (NegotiatedContentResult<Transaction>)resultRaw;
+            NegotiatedContentResult<ResponseDTO> result = (NegotiatedContentResult<ResponseDTO>)resultRaw;
 
             ////// Assert
             Assert.IsNotNull(result);
@@ -70,7 +70,7 @@ namespace ShoppingWebservice.Tests.test {
         public void AddItemWithIValidCartId() {
             // Act
             var resultRaw = _controller.AddItem(1, 189, 2);
-            NegotiatedContentResult<Transaction> result = (NegotiatedContentResult<Transaction>)resultRaw;
+            NegotiatedContentResult<ResponseDTO> result = (NegotiatedContentResult<ResponseDTO>)resultRaw;
 
             ////// Assert
             Assert.IsNotNull(result);
@@ -83,7 +83,7 @@ namespace ShoppingWebservice.Tests.test {
         public void AddItemWithIValidQuantity() {
             // Act
             var resultRaw = _controller.AddItem(1, 1, -2);
-            NegotiatedContentResult<Transaction> result = (NegotiatedContentResult<Transaction>)resultRaw;
+            NegotiatedContentResult<ResponseDTO> result = (NegotiatedContentResult<ResponseDTO>)resultRaw;
 
             ////// Assert
             Assert.IsNotNull(result);
@@ -96,7 +96,7 @@ namespace ShoppingWebservice.Tests.test {
         public void GetCartWithValidId() {
             // Act
             var resultRaw = _controller.GetCart(1);
-            NegotiatedContentResult<Transaction> result = (NegotiatedContentResult<Transaction>) resultRaw;
+            NegotiatedContentResult<ResponseDTO> result = (NegotiatedContentResult<ResponseDTO>) resultRaw;
 
             ////// Assert
             Assert.IsNotNull(result);
@@ -112,7 +112,7 @@ namespace ShoppingWebservice.Tests.test {
         public void GetCartWithInValidId() {
             // Act
             var resultRaw = _controller.GetCart(189);
-            NegotiatedContentResult<Transaction> result = (NegotiatedContentResult<Transaction>)resultRaw;
+            NegotiatedContentResult<ResponseDTO> result = (NegotiatedContentResult<ResponseDTO>)resultRaw;
 
             ////// Assert
             Assert.IsNotNull(result);
@@ -125,7 +125,7 @@ namespace ShoppingWebservice.Tests.test {
         public void GetAllOpenCarts() {
             // Act
             var resultRaw = _controller.GetAllOpenCarts();
-            NegotiatedContentResult<Transaction> result = (NegotiatedContentResult<Transaction>)resultRaw;
+            NegotiatedContentResult<ResponseDTO> result = (NegotiatedContentResult<ResponseDTO>)resultRaw;
 
             ////// Assert
             Assert.IsNotNull(result);
@@ -141,7 +141,7 @@ namespace ShoppingWebservice.Tests.test {
         public void GetAllClosedCarts() {
             // Act
             var resultRaw = _controller.GetAllClosedCarts();
-            NegotiatedContentResult<Transaction> result = (NegotiatedContentResult<Transaction>)resultRaw;
+            NegotiatedContentResult<ResponseDTO> result = (NegotiatedContentResult<ResponseDTO>)resultRaw;
 
             ////// Assert
             Assert.IsNotNull(result);
@@ -157,7 +157,7 @@ namespace ShoppingWebservice.Tests.test {
         public void CheckoutCartWithValidId() {
             // Act
             var resultRaw = _controller.CheckoutCart(1);
-            NegotiatedContentResult<Transaction> result = (NegotiatedContentResult<Transaction>)resultRaw;
+            NegotiatedContentResult<ResponseDTO> result = (NegotiatedContentResult<ResponseDTO>)resultRaw;
 
             ////// Assert
             Assert.IsNotNull(result);
@@ -170,7 +170,7 @@ namespace ShoppingWebservice.Tests.test {
         public void CheckoutCartWithInValidId() {
             // Act
             var resultRaw = _controller.CheckoutCart(154);
-            NegotiatedContentResult<Transaction> result = (NegotiatedContentResult<Transaction>)resultRaw;
+            NegotiatedContentResult<ResponseDTO> result = (NegotiatedContentResult<ResponseDTO>)resultRaw;
 
             ////// Assert
             Assert.IsNotNull(result);
@@ -183,7 +183,7 @@ namespace ShoppingWebservice.Tests.test {
         public void CheckoutCartWhichAlreadyHasCheckedOut() {
             // Act
             var resultRaw = _controller.CheckoutCart(3);
-            NegotiatedContentResult<Transaction> result = (NegotiatedContentResult<Transaction>)resultRaw;
+            NegotiatedContentResult<ResponseDTO> result = (NegotiatedContentResult<ResponseDTO>)resultRaw;
 
             ////// Assert
             Assert.IsNotNull(result);
@@ -200,7 +200,7 @@ namespace ShoppingWebservice.Tests.test {
             item.CartItemId = 1;
             // Act
             var resultRaw = _controller.UpdateCartItem(1, item);
-            NegotiatedContentResult<Transaction> result = (NegotiatedContentResult<Transaction>)resultRaw;
+            NegotiatedContentResult<ResponseDTO> result = (NegotiatedContentResult<ResponseDTO>)resultRaw;
 
             ////// Assert
             Assert.IsNotNull(result);
@@ -217,7 +217,7 @@ namespace ShoppingWebservice.Tests.test {
             item.CartItemId = 1;
             // Act
             var resultRaw = _controller.UpdateCartItem(1, item);
-            NegotiatedContentResult<Transaction> result = (NegotiatedContentResult<Transaction>)resultRaw;
+            NegotiatedContentResult<ResponseDTO> result = (NegotiatedContentResult<ResponseDTO>)resultRaw;
 
             ////// Assert
             Assert.IsNotNull(result);
@@ -229,7 +229,7 @@ namespace ShoppingWebservice.Tests.test {
         public void DeleteCartItemWithValidId() {
             // Act
             var resultRaw = _controller.DeleteCartItem(2);
-            NegotiatedContentResult<Transaction> result = (NegotiatedContentResult<Transaction>)resultRaw;
+            NegotiatedContentResult<ResponseDTO> result = (NegotiatedContentResult<ResponseDTO>)resultRaw;
 
             ////// Assert
             Assert.IsNotNull(result);
@@ -242,7 +242,7 @@ namespace ShoppingWebservice.Tests.test {
         public void DeleteCartItemWithInValidId() {
             // Act
             var resultRaw = _controller.DeleteCartItem(156);
-            NegotiatedContentResult<Transaction> result = (NegotiatedContentResult<Transaction>)resultRaw;
+            NegotiatedContentResult<ResponseDTO> result = (NegotiatedContentResult<ResponseDTO>)resultRaw;
 
             ////// Assert
             Assert.IsNotNull(result);
@@ -255,7 +255,7 @@ namespace ShoppingWebservice.Tests.test {
         public void DeleteCartWithValidId() {
             // Act
             var resultRaw = _controller.DeleteCart(1);
-            NegotiatedContentResult<Transaction> result = (NegotiatedContentResult<Transaction>)resultRaw;
+            NegotiatedContentResult<ResponseDTO> result = (NegotiatedContentResult<ResponseDTO>)resultRaw;
 
             ////// Assert
             Assert.IsNotNull(result);
@@ -268,7 +268,7 @@ namespace ShoppingWebservice.Tests.test {
         public void DeleteCartWithInValidId() {
             // Act
             var resultRaw = _controller.DeleteCart(156);
-            NegotiatedContentResult<Transaction> result = (NegotiatedContentResult<Transaction>)resultRaw;
+            NegotiatedContentResult<ResponseDTO> result = (NegotiatedContentResult<ResponseDTO>)resultRaw;
 
             ////// Assert
             Assert.IsNotNull(result);

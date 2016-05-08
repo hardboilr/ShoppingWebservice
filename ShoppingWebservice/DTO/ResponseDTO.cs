@@ -4,7 +4,7 @@ using ShoppingWebservice.ErrorHandling;
 using ShoppingWebservice.Models;
 
 namespace ShoppingWebservice.DTO {
-    public class Transaction {
+    public class ResponseDTO {
 
         public HttpStatusCode StatusCode { get; set; }
         public string Message { get; set; }

@@ -180,7 +180,8 @@
     <Compile Include="Controllers\CartController.cs" />
     <Compile Include="Controllers\ItemController.cs" />
     <Compile Include="Data\ShoppingDbInitializer.cs" />
-    <Compile Include="DTO\Transaction.cs" />
+    <Compile Include="DTO\ResponseDTO.cs" />
+    <Compile Include="ErrorHandling\SqlExceptionFilterAttribute.cs" />
     <Compile Include="ErrorHandling\Error.cs" />
     <Compile Include="ErrorHandling\ModelStateExtensions.cs" />
     <Compile Include="ErrorHandling\ServerExceptionHandler.cs" />

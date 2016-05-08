@@ -7,7 +7,6 @@ using ShoppingWebservice.ErrorHandling;
 namespace ShoppingWebservice {
     public static class WebApiConfig {
 
-        // todo: only json must be returned!
         public static void Register(HttpConfiguration config) {
             // Web API configuration and services
 
@@ -23,6 +22,8 @@ namespace ShoppingWebservice {
             // global exception handler
             config.Services.Replace(typeof(IExceptionHandler), new ServerExceptionHandler());
 
+            config.Filters.Add(new SqlExceptionFilterAttribute());
+
             // avoid stackoverflow exceptions on entities with loop refs
             config.Formatters.JsonFormatter
                         .SerializerSettings
@@ -31,10 +32,11 @@ namespace ShoppingWebservice {
             // camelcase json responses
             config.Formatters.JsonFormatter.SerializerSettings.ContractResolver = new CamelCasePropertyNamesContractResolver();
 
+            // remove support for XML responses
+            config.Formatters.Remove(config.Formatters.XmlFormatter);
+
             // ignore null values 
             config.Formatters.JsonFormatter.SerializerSettings.NullValueHandling = NullValueHandling.Ignore;
-
-
         }
     }
 }

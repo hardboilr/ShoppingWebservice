@@ -15,11 +15,11 @@ namespace ShoppingWebservice.Repositories {
             _shoppingContext = new ShoppingContext();
         }
 
-        public Transaction CreateCart(int userId) {
+        public ResponseDTO CreateCart(int userId) {
             using (var db = _shoppingContext) {
                 var user = db.Users.Find(userId);
                 if (user == null) {
-                    return new Transaction {
+                    return new ResponseDTO {
                         StatusCode = HttpStatusCode.BadRequest,
                         Message = "Not found",
                         MessageDetail = "User with id: " + userId + " not found."
@@ -28,7 +28,7 @@ namespace ShoppingWebservice.Repositories {
                 Cart cart = new Cart(user);
                 db.Carts.Add(cart);
                 db.SaveChanges();
-                return new Transaction {
+                return new ResponseDTO {
                     StatusCode = HttpStatusCode.OK,
                     Message = "Ok",
                     MessageDetail = "Cart successfully created.",
@@ -37,10 +37,10 @@ namespace ShoppingWebservice.Repositories {
             }
         }
 
-        public Transaction AddItem(int itemId, int cartId, int quantity) {
+        public ResponseDTO AddItem(int itemId, int cartId, int quantity) {
             // negative quantity
             if (quantity <= 0) {
-                return new Transaction {
+                return new ResponseDTO {
                     StatusCode = HttpStatusCode.BadRequest,
                     Message = "Forbidden",
                     MessageDetail = quantity + " is a negative value and therefore not allowed."
@@ -57,7 +57,7 @@ namespace ShoppingWebservice.Repositories {
 
                 // cart not found
                 if (cart == null || !cart.Any()) {
-                    return new Transaction {
+                    return new ResponseDTO {
                         StatusCode = HttpStatusCode.BadRequest,
                         Message = "Not found",
                         MessageDetail = "Cart with id: " + cartId + " not found."
@@ -68,7 +68,7 @@ namespace ShoppingWebservice.Repositories {
 
                 // item not found
                 if (item == null) {
-                    return new Transaction {
+                    return new ResponseDTO {
                         StatusCode = HttpStatusCode.BadRequest,
                         Message = "Not found",
                         MessageDetail = "Item with id: " + itemId + " not found."
@@ -82,7 +82,7 @@ namespace ShoppingWebservice.Repositories {
                         c.Price = c.Item.Price * c.Qty; // calculate new sumPrice
                         db.SaveChanges();
                     }
-                    return new Transaction {
+                    return new ResponseDTO {
                         StatusCode = HttpStatusCode.OK,
                         Message = "Ok",
                         MessageDetail = "Successfully added " + quantity + " " + item.Name + "'s to existing item in cart."
@@ -93,7 +93,7 @@ namespace ShoppingWebservice.Repositories {
                 cart.First().AddCartItem(new CartItem(item, item.Price * quantity, quantity));
                 db.SaveChanges();
 
-                return new Transaction {
+                return new ResponseDTO {
                     StatusCode = HttpStatusCode.OK,
                     Message = "Ok",
                     MessageDetail = "Successfully added " + quantity + " " + item.Name + "'s to cart with id: " + cartId + "."
@@ -102,7 +102,7 @@ namespace ShoppingWebservice.Repositories {
             }
         }
 
-        public Transaction UpdateCarItem(int cartId, CartItem item) {
+        public ResponseDTO UpdateCarItem(int cartId, CartItem item) {
             using (var db = _shoppingContext) {
                 var existingCartItem = db.CartItems.Find(item.CartItemId);
                 var existingCart = db.Carts.Find(cartId);
@@ -110,7 +110,7 @@ namespace ShoppingWebservice.Repositories {
                     if (item.Qty <= 0) {
                         db.CartItems.Remove(existingCartItem);
                         db.SaveChanges();
-                        return new Transaction {
+                        return new ResponseDTO {
                             StatusCode = HttpStatusCode.OK,
                             Message = "Ok",
                             MessageDetail = item.Item.Name + " Successfully removed from cart."
@@ -121,7 +121,7 @@ namespace ShoppingWebservice.Repositories {
                         existingCartItem.Price = item.Item.Price * item.Qty;
                         existingCartItem.Qty = item.Qty;
                         db.SaveChanges();
-                        return new Transaction {
+                        return new ResponseDTO {
                             StatusCode = HttpStatusCode.OK,
                             Message = "Ok",
                             MessageDetail = "The Quantity for " + existingCartItem.Item.Name +
@@ -131,14 +131,14 @@ namespace ShoppingWebservice.Repositories {
                    
                 }
             }
-            return new Transaction {
+            return new ResponseDTO {
                 StatusCode = HttpStatusCode.BadRequest,
                 Message = "Not found",
                 MessageDetail = "CartItem with id: " + item.CartItemId + " not found."
             };
         }
 
-        public Transaction GetCart(int cartId) {
+        public ResponseDTO GetCart(int cartId) {
             using (var db = _shoppingContext) {
                 var cart = db.Carts
                     .Where(c => c.CartId == cartId)
@@ -147,14 +147,14 @@ namespace ShoppingWebservice.Repositories {
 
                 if (!cart.Any())
                 {
-                    return new Transaction {
+                    return new ResponseDTO {
                         StatusCode = HttpStatusCode.BadRequest,
                         Message = "Not found",
                         MessageDetail = "No cart with id: " +  cartId + " was found."
                     };
                 }
 
-                return new Transaction {
+                return new ResponseDTO {
                     StatusCode = HttpStatusCode.OK,
                     Message = "Ok",
                     MessageDetail = "Cart succesfully found",
@@ -163,7 +163,7 @@ namespace ShoppingWebservice.Repositories {
             }
         }
 
-        public Transaction GetAllCartsbyStatus(bool isClosed) {
+        public ResponseDTO GetAllCartsbyStatus(bool isClosed) {
 
             string status = isClosed ? "closed" : "open";
 
@@ -175,7 +175,7 @@ namespace ShoppingWebservice.Repositories {
                     .ToList();
 
                 if (!cart.Any()) {
-                    return new Transaction {
+                    return new ResponseDTO {
                         StatusCode = HttpStatusCode.BadRequest,
                         Message = "Not found",
                         MessageDetail = "No " + status + " carts found."
@@ -190,7 +190,7 @@ namespace ShoppingWebservice.Repositories {
                     messageDetail = "Successfully found " + noOfCarts + " " + status + " carts.";
                 }
 
-                return new Transaction {
+                return new ResponseDTO {
                     StatusCode = HttpStatusCode.OK,
                     Message = "Ok",
                     MessageDetail = messageDetail,
@@ -199,7 +199,7 @@ namespace ShoppingWebservice.Repositories {
             }
         }
 
-        public Transaction CheckoutCart(int cartId) {
+        public ResponseDTO CheckoutCart(int cartId) {
             using (var db = _shoppingContext) {
                 var cart = db.Carts
                     .Where(c => c.CartId == cartId)
@@ -207,7 +207,7 @@ namespace ShoppingWebservice.Repositories {
                     .Include(c => c.User);
 
                 if (cart == null || !cart.Any()) {
-                    return new Transaction {
+                    return new ResponseDTO {
                         StatusCode = HttpStatusCode.BadRequest,
                         Message = "Not found",
                         MessageDetail = "Cart with id: " + cartId + " not found."
@@ -215,7 +215,7 @@ namespace ShoppingWebservice.Repositories {
                 }
 
                 if (cart.First().CheckedOutAt.HasValue) {
-                    return new Transaction {
+                    return new ResponseDTO {
                         StatusCode = HttpStatusCode.BadRequest,
                         Message = "Already checked out",
                         MessageDetail = "Cart with id: " + cartId + " already checked out."
@@ -224,7 +224,7 @@ namespace ShoppingWebservice.Repositories {
 
                 cart.First().CheckedOutAt = DateTime.UtcNow;
                 db.SaveChanges();
-                return new Transaction {
+                return new ResponseDTO {
                     StatusCode = HttpStatusCode.OK,
                     Message = "Ok",
                     MessageDetail = "Cart successfully checked out",
@@ -233,13 +233,13 @@ namespace ShoppingWebservice.Repositories {
             }
         }
 
-        public Transaction DeleteCart(int cartId) {
+        public ResponseDTO DeleteCart(int cartId) {
             using (var db = _shoppingContext)
             {
                 var cart = db.Carts.Find(cartId);
 
                 if (cart == null) {
-                    return new Transaction {
+                    return new ResponseDTO {
                         StatusCode = HttpStatusCode.BadRequest,
                         Message = "Not found",
                         MessageDetail = "Cart with id: " + cartId + " not found."
@@ -248,7 +248,7 @@ namespace ShoppingWebservice.Repositories {
 
                 db.Carts.Remove(cart);
                 db.SaveChanges();
-                return new Transaction {
+                return new ResponseDTO {
                     StatusCode = HttpStatusCode.OK,
                     Message = "Ok",
                     MessageDetail = "Cart with id: " + cartId + " successfully deleted."
@@ -256,19 +256,19 @@ namespace ShoppingWebservice.Repositories {
             }
         }
 
-        public Transaction DeleteCarItemfromCart(int cartItemId) {
+        public ResponseDTO DeleteCarItemfromCart(int cartItemId) {
             using (var db = _shoppingContext) {
                 var existingCartItem = db.CartItems.Find(cartItemId);
                 if (existingCartItem != null) {
                     db.CartItems.Remove(existingCartItem);
                     db.SaveChanges();
-                    return new Transaction {
+                    return new ResponseDTO {
                         StatusCode = HttpStatusCode.OK,
                         Message = "Ok",
                         MessageDetail = "CarItem with id: " + cartItemId + " successfully deleted."
                     }; 
                 }
-                return new Transaction {
+                return new ResponseDTO {
                     StatusCode = HttpStatusCode.BadRequest,
                     Message = "Not found",
                     MessageDetail = "CartItem with id: " + cartItemId + " not found."

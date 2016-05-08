@@ -1,4 +1,5 @@
-﻿using System.Net;
+﻿using System;
+using System.Net;
 using System.Web.Http;
 using ShoppingWebservice.DTO;
 using ShoppingWebservice.ErrorHandling;
@@ -18,52 +19,52 @@ namespace ShoppingWebservice.Controllers {
 
         [HttpPost]
         public IHttpActionResult CreateItem(Item item) {
-            Transaction trans;
+            ResponseDTO responseDto;
             if (!ModelState.IsValid) {
-                trans = new Transaction {
+                responseDto = new ResponseDTO {
                     StatusCode = HttpStatusCode.BadRequest,
                     Message = GetJsonMessage(),
                     MessageDetail = GetJsonDetailMessage(),
                     Errors = ModelState.AllErrors()
                 };
-                return Content(HttpStatusCode.BadRequest, trans);
+                return Content(HttpStatusCode.BadRequest, responseDto);
             }
-            trans = _itemRepository.CreateItem(item);
-            return Content(trans.StatusCode, trans);
+            responseDto = _itemRepository.CreateItem(item);
+            return Content(responseDto.StatusCode, responseDto);
         }
 
         [Route("all")]
         public IHttpActionResult GetAllItems() {
-            Transaction trans = _itemRepository.GetAllItems();
-            return Content(trans.StatusCode, trans);
+            ResponseDTO responseDto = _itemRepository.GetAllItems();
+            return Content(responseDto.StatusCode, responseDto);
         }
 
         [Route("{itemId}")]
         public IHttpActionResult GetItem(int itemId) {
-            Transaction trans = _itemRepository.GetItem(itemId);
-            return Content(trans.StatusCode, trans);
+            ResponseDTO responseDto = _itemRepository.GetItem(itemId);
+            return Content(responseDto.StatusCode, responseDto);
         }
 
         [HttpPut]
         public IHttpActionResult UpdateItem(Item item) {
-            Transaction trans;
+            ResponseDTO responseDto;
             if (!ModelState.IsValid) {
-                trans = new Transaction {
+                responseDto = new ResponseDTO {
                     StatusCode = HttpStatusCode.BadRequest,
                     Message = GetJsonMessage(),
                     MessageDetail = GetJsonDetailMessage(),
                     Errors = ModelState.AllErrors()
                 };
-                return Content(HttpStatusCode.BadRequest, trans);
+                return Content(HttpStatusCode.BadRequest, responseDto);
             }
-            trans = _itemRepository.UpdateItem(item);
-            return Content(trans.StatusCode, trans);
+            responseDto = _itemRepository.UpdateItem(item);
+            return Content(responseDto.StatusCode, responseDto);
         }
 
         [Route("{itemId}")]
         public IHttpActionResult DeleteItem(int itemId) {
-            Transaction trans = _itemRepository.DeleteItem(itemId);
-            return Content(trans.StatusCode, trans);
+            ResponseDTO responseDto = _itemRepository.DeleteItem(itemId);
+            return Content(responseDto.StatusCode, responseDto);
         }
 
         private static string GetJsonMessage() {

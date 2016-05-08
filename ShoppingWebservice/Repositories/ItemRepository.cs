@@ -1,12 +1,6 @@
-﻿using System.Collections.Generic;
-using System.Diagnostics;
-using System.Linq;
+﻿using System.Linq;
 using System.Net;
-using System.Net.Http;
-using System.Web.Http;
-using Newtonsoft.Json.Linq;
 using ShoppingWebservice.DTO;
-using ShoppingWebservice.ErrorHandling;
 using ShoppingWebservice.Models;
 
 namespace ShoppingWebservice.Repositories {
@@ -19,13 +13,13 @@ namespace ShoppingWebservice.Repositories {
         }
 
         // CREATE
-        public Transaction CreateItem(Item item) {
+        public ResponseDTO CreateItem(Item item) {
             using (var db = _shoppingContext) {
                 // check for existing items with same name
 
                 Item it = CheckIfItemExists(item, false);
                 if (it != null) {
-                    return new Transaction {
+                    return new ResponseDTO {
                         StatusCode = HttpStatusCode.BadRequest,
                         Message = "Item already exist",
                         MessageDetail = "It seems that you're trying to create an item already in the database: " + it
@@ -33,7 +27,7 @@ namespace ShoppingWebservice.Repositories {
                 }
                 db.Items.Add(item);
                 db.SaveChanges();
-                return new Transaction {
+                return new ResponseDTO {
                     StatusCode = HttpStatusCode.OK,
                     Message = "Ok",
                     MessageDetail = item.Name + " successfully created."
@@ -42,19 +36,19 @@ namespace ShoppingWebservice.Repositories {
         }
 
         // READ ALL
-        public Transaction GetAllItems() {
+        public ResponseDTO GetAllItems() {
             using (var db = _shoppingContext) {
                 var items = db.Items
                     .ToList();
 
                 if (!items.Any()) {
-                    return new Transaction {
+                    return new ResponseDTO {
                         StatusCode = HttpStatusCode.BadRequest,
                         Message = "No items",
                         MessageDetail = "No items found."
                     };
                 }
-                return new Transaction {
+                return new ResponseDTO {
                     StatusCode = HttpStatusCode.OK,
                     Message = "Ok",
                     MessageDetail = "Successfully retrieved items",
@@ -64,18 +58,18 @@ namespace ShoppingWebservice.Repositories {
         }
 
         // READ PER ID
-        public Transaction GetItem(int itemId) {
+        public ResponseDTO GetItem(int itemId) {
             using (var db = _shoppingContext) {
                 var item = db.Items
                     .Where(i => i.ItemId == itemId);
                 if (!item.Any()) {
-                    return new Transaction {
+                    return new ResponseDTO {
                         StatusCode = HttpStatusCode.BadRequest,
                         Message = "Not found",
                         MessageDetail = "Item with id: " + itemId + " not found.",
                     };
                 }
-                return new Transaction {
+                return new ResponseDTO {
                     StatusCode = HttpStatusCode.OK,
                     Message = "Ok",
                     MessageDetail = "Successfully found item with id: " + itemId + ".",
@@ -85,13 +79,13 @@ namespace ShoppingWebservice.Repositories {
         }
 
         // UPDATE
-        public Transaction UpdateItem(Item item) {
+        public ResponseDTO UpdateItem(Item item) {
             using (var db = _shoppingContext) {
                 var existingItem = db.Items
                     .Where(i => i.ItemId == item.ItemId);
 
                 if (!existingItem.Any()) {
-                    return new Transaction {
+                    return new ResponseDTO {
                         StatusCode = HttpStatusCode.BadRequest,
                         Message = "Not found",
                         MessageDetail = "Item with id: " + item.ItemId + " not found."
@@ -100,7 +94,7 @@ namespace ShoppingWebservice.Repositories {
 
                 Item it = CheckIfItemExists(item, true);
                 if (it != null) {
-                    return new Transaction {
+                    return new ResponseDTO {
                         StatusCode = HttpStatusCode.BadRequest,
                         Message = "Item already exist",
                         MessageDetail = "It seems that you're trying to edit an existing into an item already in the database: " + it
@@ -112,7 +106,7 @@ namespace ShoppingWebservice.Repositories {
                 existingItem.First().Price = item.Price;
                 existingItem.First().Tag = item.Tag;
                 db.SaveChanges();
-                return new Transaction {
+                return new ResponseDTO {
                     StatusCode = HttpStatusCode.OK,
                     Message = "Ok",
                     MessageDetail = "Item with id: " + item.ItemId + " successfully updated."
@@ -121,13 +115,13 @@ namespace ShoppingWebservice.Repositories {
         }
 
         // DELETE
-        public Transaction DeleteItem(int itemId) {
+        public ResponseDTO DeleteItem(int itemId) {
             using (var db = _shoppingContext) {
                 var existingItem = db.Items.
                     Where(i => i.ItemId == itemId);
 
                 if (!existingItem.Any()) {
-                    return new Transaction {
+                    return new ResponseDTO {
                         StatusCode = HttpStatusCode.BadRequest,
                         Message = "Not found",
                         MessageDetail = "Item with id: " + itemId + " not found."
@@ -135,7 +129,7 @@ namespace ShoppingWebservice.Repositories {
                 }
                 db.Items.Remove(existingItem.First());
                 db.SaveChanges();
-                return new Transaction {
+                return new ResponseDTO {
                     StatusCode = HttpStatusCode.OK,
                     Message = "Ok",
                     MessageDetail = "Item with id: " + itemId + " successfully deleted."
