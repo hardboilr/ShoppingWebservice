@@ -22,6 +22,7 @@ namespace ShoppingWebservice {
             // global exception handler
             config.Services.Replace(typeof(IExceptionHandler), new ServerExceptionHandler());
 
+            // exception filters
             config.Filters.Add(new SqlExceptionFilterAttribute());
 
             // avoid stackoverflow exceptions on entities with loop refs
