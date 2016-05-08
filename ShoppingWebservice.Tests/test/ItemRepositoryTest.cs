@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Net;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using ShoppingWebservice.Models;
 using ShoppingWebservice.Repositories;
@@ -9,11 +10,20 @@ namespace ShoppingWebservice.Tests.test {
     public class ItemRepositoryTest {
         ItemRepository ic = new ItemRepository();
 
-        //[TestMethod]
-        //public void CreateItemTest() {
-        //    ic.CreateItem("Dairy", "Milk, Eggs, etc.", "Organic Eggs", "6 organic eggs", 6.00f);
-        //    Assert.AreEqual(6.00f, ic.GetItem(1).Price);
-        //}
+        [TestMethod]
+        public void CreateItem() {
+            //Setup
+            Item franskBrie = new Item("Président Fransk Brie", "Hvidskimmelost lavet af fransk komælk. God til ostebordet", 24.95m, "mad,mejeri,ost");
+
+            //Act
+            var result = ic.CreateItem(franskBrie);
+
+            //Assert
+            Assert.IsNotNull(result);
+            Assert.IsNotNull(result.Message);
+            Assert.AreEqual(HttpStatusCode.OK, result.StatusCode);
+            Assert.AreEqual(franskBrie.Name + " successfully created.", result.MessageDetail);
+        }
 
         //[TestMethod]
         //public void UpdateItemTest() {
@@ -28,11 +38,21 @@ namespace ShoppingWebservice.Tests.test {
         //    Assert.IsNull(ic.GetItem(2));
         //}
 
-        //[TestMethod]
-        //public void GetAllItemsTest() {
-        //    ic.CreateItem("Dairy", "Milk, Eggs, etc.", "Organic Milk", "1l. of milk", 2.50f);
-        //    Assert.AreEqual(2, ic.GetAllItems().Count);
-        //}
+        [TestMethod]
+        public void GetAllItems() {
+            //Setup
+            Item gammelOlesFar = new Item("Gammel Oles far", "Føj for satan den er ulækker den her.", 62.95m, "mad,mejeri,ost");
+            
+            //Act
+            ic.CreateItem(gammelOlesFar);
+            var result = ic.GetAllItems();
+
+            //Assert
+            Assert.IsNotNull(result);
+            Assert.IsNotNull(result.Message);
+            Assert.AreEqual(HttpStatusCode.OK, result.StatusCode);
+            Assert.AreEqual(2, result.Items.Count);
+        }
 
         //[TestMethod]
         //public void GetAllItemsByCategoryTest() {
