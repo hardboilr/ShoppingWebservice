@@ -2,8 +2,9 @@
 using System.Collections.Generic;
 using System.Net;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using ShoppingWebservice.Domains.Item;
+using ShoppingWebservice.Domains.Item.Repository;
 using ShoppingWebservice.Models;
-using ShoppingWebservice.Repositories;
 
 namespace ShoppingWebservice.Tests.test {
     [TestClass]

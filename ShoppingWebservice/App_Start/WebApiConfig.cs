@@ -3,6 +3,7 @@ using System.Web.Http.ExceptionHandling;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Serialization;
 using ShoppingWebservice.ErrorHandling;
+using ShoppingWebservice.Shared.ErrorHandling;
 
 namespace ShoppingWebservice {
     public static class WebApiConfig {
